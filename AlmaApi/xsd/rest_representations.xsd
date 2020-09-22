@@ -1,0 +1,33 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of Digital Representations in Alma. The list contains both
+			Remote and regular Representations if exists.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_representation.xsd" />
+
+	<xs:element name="representations" type="representations" />
+
+	<xs:complexType name="representations">
+		<xs:annotation>
+			<xs:documentation>A list of Representations.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="representation"
+				type="representation">
+				<xs:annotation>
+					<xs:documentation>Representation object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="total_record_count" type="xs:long">
+			<xs:annotation>
+				<xs:documentation>The total number of representations.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

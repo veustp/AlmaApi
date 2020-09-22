@@ -1,0 +1,48 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>This Web service retrieves information related to a
+			given user—the user’s balance, active/disputed fines/fees, and a list
+			of fine/fee transactions—if the input parameters provide a match.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_user_fee.xsd" />
+
+	<xs:element name="fees" type="fees" />
+
+	<xs:complexType name="fees">
+		<xs:annotation>
+			<xs:documentation>A list of fees.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="fee"
+				type="fee">
+				<xs:annotation>
+					<xs:documentation>Fee Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="total_record_count" type="xs:long">
+			<xs:annotation>
+				<xs:documentation>The total number of fees. This can be used when
+					retrieving the fees list using pagination.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute name="total_sum" type="xs:float">
+			<xs:annotation>
+				<xs:documentation>The total sum of the fees.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+
+		<xs:attribute name="currency" type="xs:string">
+			<xs:annotation>
+				<xs:documentation>The currency code for the fees.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

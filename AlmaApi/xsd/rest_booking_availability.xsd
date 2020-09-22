@@ -1,0 +1,55 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Information regarding periods when an resource is unavailable for booking.</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="booking_availabilities" type="booking_availabilities" />
+
+   <xs:complexType name="booking_availabilities">
+		<xs:annotation>
+			<xs:documentation>List of periods when the resource is unavailable.</xs:documentation>
+		</xs:annotation>
+      <xs:sequence>
+			<xs:element name="booking_availability" type="booking_availability" maxOccurs="unbounded" minOccurs="0" nillable="true" />
+      </xs:sequence>
+   </xs:complexType>
+
+   <xs:complexType name="booking_availability">
+		<xs:annotation>
+			<xs:documentation>Details regarding a specific time period when the resource is unavailable.</xs:documentation>
+		</xs:annotation>
+      <xs:sequence>
+         <xs:element name="from_time" type="xs:dateTime" maxOccurs="1" minOccurs="1" nillable="false">
+            <xs:annotation>
+            	<xs:documentation>From when this resource is unavailable.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+
+         <xs:element name="to_time" type="xs:dateTime" maxOccurs="1" minOccurs="1" nillable="false">
+            <xs:annotation>
+               <xs:documentation>Until when this resource is unavailable.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+
+         <xs:element name="user_id" type="xs:string" maxOccurs="1" minOccurs="0" nillable="true">
+            <xs:annotation>
+               <xs:documentation>The Primary ID of the user who has the resource at the specified time. This is relevant in cases a user already requested the item or has it on loan. Will only be populated in item level queries.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+
+        <xs:element name="user_full_name" type="xs:string" maxOccurs="1" minOccurs="0" nillable="true">
+            <xs:annotation>
+               <xs:documentation>The full name of the user who has the resource at the specified time. The format of the name Is  according to 'DisplayUserName' mapping table. Will only be populated in item level queries, in cases the user_id field is populated.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+
+         <xs:element name="reason" type="xs:string" maxOccurs="1" minOccurs="0" nillable="true">
+         	<xs:annotation>
+               <xs:documentation>The reason why this resource is unavailable. Will only be populated in item level queries.</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

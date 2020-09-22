@@ -1,0 +1,729 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:include schemaLocation="rest_citation_tags.xsd" />
+	<xs:include schemaLocation="rest_notes.xsd" />
+
+	<xs:annotation>
+		<xs:documentation>Information about a single Citation in Alma.</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="citation" type="citation" />
+
+	<xs:complexType name="citation">
+		<xs:annotation>
+			<xs:documentation>Citation Object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Identifier of the citation in Alma. Output parameter. Should be used in subsequent queries regarding the citation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="status" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>CitationStatuses</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>
+              The status of the citation. Possible codes are listed in 'ReadingListCitationStatuses' code table and 'AdditionalReadingListCitationStatuses' code table.
+     				</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="copyrights_status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>CitationCopyRights</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The copyright status of the citation. Possible codes are listed in 'CitationCopyRights' code table.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="secondary_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>ReadingListCitationSecondaryTypes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The secondary Type status of the citation. Possible codes are listed in 'ReadingListCitationSecondaryTypes' code table.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+						<xs:codeTable>ReadingListCitationTypes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The type of the citation. Possible codes are listed in 'ReadingListCitationTypes' code table.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="metadata" type="metadata" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Metadata for the Citation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="open_url" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>An OpenURL link for the Citation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="leganto_permalink" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A link to the Citation in Leganto UI.
+					 If the link is intended for users who login to Leganto using SAML or CAS, change the auth parameter accordingly.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="file_link" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A link to the Citation's file, when available.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="public_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Public Note. Relevant for Leganto and only as an output.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="notes" type="notes" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The citation's related notes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<!-- URM-72290 Enhancing the API -->
+			<xs:element name="due_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Due Date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="license_type" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Permissions under which the file or document is licensed for use.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="visibility_start_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Start date for making the citation available.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="visibility_end_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>End date for making the citation available.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="material_visibility_start_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Material Visibility Start Date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="material_visibility_end_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Material Visibility End Date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="sipx_doc_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>SIPX Document ID.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="sipx_user_price" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>SIPX User Price.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="sipx_list_price" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>SIPX List Price.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="sipx_funded" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>SIPX Funded true/false.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+
+			<xs:element name="source1" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 1/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source2" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 2/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source3" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 3/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source4" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 4/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source5" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 5/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source6" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 6/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source7" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 7/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source8" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 8/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source9" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 9/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source10" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source Link 10/10.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="defined_fields" type="defined_fields" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Types and Attributes configured in CitationAttributes, CitationTypes, CitationsTypesAttributes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="section_info" type="section_info" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Information regarding the Section to which the citation belongs.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="citation_tags" type="citation_tags" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Tags of the Citation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+		</xs:sequence>
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="metadata">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Metadata about the Citation.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A name given to the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>An entity primarily responsible for making the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="publisher" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>An entity responsible for making the resource available.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="publication_date" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A point or period of time associated with an event in the lifecycle of the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="edition" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Edition</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isbn" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>ISBN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issn" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>ISSN</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mms_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>MMS id. When included, will act as if to add repository citation and metadata fields from the repository record and will override any field in the citation. When not included, will act as a non-repository citation. And in that case, even if a match to an existing record is found, the citation metadata field will not be overridden.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="additional_person_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Additional person name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="place_of_publication" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Place of publication.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="call_number" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Call number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="journal_title" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Journal title.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="article_title" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Article title. See Dublin Core title.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issue" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Issue.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="chapter" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Chapter number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="chapter_title" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xs:tags>api get post put</xs:tags>
+                    </xs:appinfo>
+                    <xs:documentation>Chapter title.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="chapter_author" type="xs:string" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:appinfo>
+                        <xs:tags>api get post put</xs:tags>
+                    </xs:appinfo>
+                    <xs:documentation>Chapter author.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+			<xs:element name="year" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Year.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pages" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Pages.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="source" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Source.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="series_title_number" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Series title number</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pmid" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>PMID</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="doi" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>DOI</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="volume" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Volume.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="start_page" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Start page.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end_page" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>End page.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="author_initials" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Author initials</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="part" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Part.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="defined_fields">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Types and Attributes configured in CitationAttributes, CitationTypes, CitationsTypesAttributes.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="type_attributes" minOccurs="0" maxOccurs="5">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:appinfo>
+							<xs:tags>api get post put</xs:tags>
+						</xs:appinfo>
+						<xs:documentation>The different attributes types. Mandatory.</xs:documentation>
+					</xs:annotation>
+					<xs:all>
+						<xs:element name="attribute" minOccurs="1" maxOccurs="1">
+							<xs:annotation>
+								<xs:appinfo>
+									<xs:codeTable>CitationAttributes</xs:codeTable>
+								</xs:appinfo>
+								<xs:documentation>Attribute of the citation. Possible codes are listed in 'CitationAttributes' code table.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="desc" type="xs:string" use="optional" />
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+						<xs:element name="attribute_type" minOccurs="0" maxOccurs="1">
+							<xs:annotation>
+								<xs:appinfo>
+									<xs:codeTable>CitationAttributesTypes</xs:codeTable>
+								</xs:appinfo>
+								<xs:documentation>Attribute of the citation. Possible codes are listed in 'CitationAttributesTypes' code table.</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="desc" type="xs:string" use="optional" />
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="section_info">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Information regarding the related Section.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Identifier of the Section. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Name of the Section. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Description of the Section. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="start_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Start date for section.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>End date for section.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="visibility" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Whether to hide the section when outside of date range.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="section_tags" type="citation_tags" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Tags of the Section.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,29 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>A list of Tags belonging to to a Citation of a Reading List in Alma.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_citation_tag.xsd" />
+
+	<xs:element name="citation_tags" type="citation_tags" />
+
+	<xs:complexType name="citation_tags">
+		<xs:annotation>
+			<xs:documentation>A list of Citation tags.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="citation_tag" type="citation_tag">
+				<xs:annotation>
+					<xs:documentation>Citation Tag Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of citation tags.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+</xs:schema>

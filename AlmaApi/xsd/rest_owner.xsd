@@ -1,0 +1,55 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Information about a single Owner of a Reading List.</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="owner" type="owner" />
+
+	<xs:complexType name="owner">
+		<xs:annotation>
+			<xs:documentation>A specific owner.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="primary_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The primary identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="hierarchy"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>OwnerHierarchy</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Owner hierarchy.
+					Possible codes are listed in the 'OwnerHierarchy' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="full_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The user's first and last name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+</xs:schema>

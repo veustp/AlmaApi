@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>A resource request.
+			This can be a request for delivering a physical item to a patron (request types: HOLD,
+			BOOKING), a request for digitizing a file for a patron
+			(DIGITIZATION), a move request (MOVE) or work order (WORK_ORDER).
+			A request object can be retrieved, created and updated.
+			Please note that the request object includes fields which are
+			relevant only for specific request type(s).
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="user_request" type="request" />
+
+	<xs:complexType name="request">
+		<xs:annotation>
+			<xs:documentation>Request object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="user_primary_id" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The primary identifier of the requesting user. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="request_id" type="xs:string" nillable="false"
+				minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The identifier of the request in Alma. Should be
+						used in subsequent queries regarding the request. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="request_type" type="request_types"
+				minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The type of the request. Mandatory. Possible
+						values are: HOLD, DIGITIZATION, BOOKING, MOVE, WORK_ORDER. This field cannot be updated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="request_sub_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+<!-- 						<xs:codeTable>PlanTypeDefinition</xs:codeTable>  -->
+					</xs:appinfo>
+ 				<xs:documentation>The sub type of the request. Output parameter.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="title" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The title of the requested resource. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="author" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The author of the requested resource. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The description of the requested resource when
+						dealing with multi volume/issue resource. This field is output parameter when the request is in item level, and input parameter when the request is in title level.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pickup_location" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Description of the pickup location (library or circulation desk)
+						where the resource will be delivered. Not relevant when
+						request_type = DIGITIZATION. Output parameter. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pickup_location_type" type="pickup_location_types"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The pickup location type. Possible values are:
+						LIBRARY, CIRCULATION_DESK. Relevant and mandatory when
+						request_type = HOLD or BOOKING.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pickup_location_library" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The pickup location library code. Relevant and
+						mandatory when request_type = HOLD or BOOKING.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="pickup_location_circulation_desk" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The pickup location circulation desk code.
+						Relevant when request_type = HOLD or BOOKING, and will exist if
+						pickup_location_type = CIRCULATION_DESK.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="target_destination"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The code of the department chosen to fulfill the digitization or work order request.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="material_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>PhysicalMaterialType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The requested material type code. Optional.
+						Possible codes are listed in 'Physical Material Type' code-table. This field is output parameter when the request is in item level, and input parameter when the request is in title level.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="last_interest_date" type="xs:date"
+				nillable="false" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The last date for which the request is needed. Optional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="partial_digitization" type="xs:boolean"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether the digitization is partial or
+						full. Relevant and mandatory when request_type = DIGITIZATION.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="comment" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The related comment of the request. Mandatory
+						when request_type = DIGITIZATION and partial_digitization is true.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="request_status" type="request_status"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The status of the request. Possible values are:
+						In Process, On Hold Shelf, Not Started. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="place_in_queue" type="xs:int" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+						<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The place in queue of the request. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="request_date" type="xs:date" nillable="false"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The creation date of the request. Output
+						parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="task_name" type="xs:string" nillable="false"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The task name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expiry_date" type="xs:date" nillable="false"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The expiry date of the request. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="booking_start_date" type="xs:dateTime"
+				nillable="false" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The start date in which the request is needed.
+						Mandatory when request_type = BOOKING.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="booking_end_date" type="xs:dateTime"
+				nillable="false" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The end date in which the request is needed.
+						Mandatory when request_type = BOOKING.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="adjusted_booking_start_date" type="xs:dateTime"
+				nillable="false" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The actual start date of the request, as
+						calculated by the system. Relevant when request_type = BOOKING.
+						Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="adjusted_booking_end_date" type="xs:dateTime"
+				nillable="false" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The actual end date of the request, as calculated
+						by the system. Relevant when request_type = BOOKING. Output
+						parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+		</xs:all>
+	</xs:complexType>
+
+	<xs:simpleType name="request_types">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BOOKING" />
+			<xs:enumeration value="DIGITIZATION" />
+			<xs:enumeration value="HOLD" />
+			<xs:enumeration value="MOVE" />
+			<xs:enumeration value="WORK_ORDER" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="pickup_location_types">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="LIBRARY" />
+			<xs:enumeration value="CIRCULATION_DESK" />
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="request_status">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="In Process" />
+			<xs:enumeration value="On Hold Shelf" />
+			<xs:enumeration value="Not Started" />
+		</xs:restriction>
+	</xs:simpleType>
+
+</xs:schema>

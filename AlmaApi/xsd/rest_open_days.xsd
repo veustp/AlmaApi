@@ -1,0 +1,87 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of start times and end times for the library open hours.</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="days" type="days" />
+
+	<xs:complexType name="days">
+		<xs:annotation>
+			<xs:documentation>A list of start times and end times for the library open hours.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="day" type="day">
+				<xs:annotation>
+					<xs:documentation>Start time and end time for a specific day.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="day">
+		<xs:annotation>
+			<xs:documentation>Library open hours for a specific day.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="day_of_week" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>DaysOfWeek</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Day of week. SUNDAY, MONDAY, ... SATURDAY.
+						Possible values are listed in 'DaysOfWeek' code table.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="hours" type="hours" />
+
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="hours">
+		<xs:annotation>
+			<xs:documentation>A list of start times and end times for a specific day.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="hour" type="hour">
+				<xs:annotation>
+					<xs:documentation>Start time and end time for a specific day.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="hour">
+		<xs:annotation>
+			<xs:documentation>Start times and end times for which the library is open.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="from" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>From hour.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="to" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>To hour.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

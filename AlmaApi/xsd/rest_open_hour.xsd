@@ -1,0 +1,124 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Library open hour, event, or exception.</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="open_hour" type="open_hour" />
+
+	<xs:complexType name="open_hour">
+		<xs:annotation>
+			<xs:documentation>Library open hour, event, or exception.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>CalendarRecordsTypes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Calendar record type. Standard opening hour, event or exception.
+						Possible values are listed in 'CalendarRecordsTypes' [code
+						table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="inherited" type="xs:boolean" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>False means that it is a change in the library scope.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="desc" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="recurrence_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>RecurrenceType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Recurrence type. WEEKLY, YEARLY.
+						Possible values are listed in 'RecurrenceType' [code-table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="from_date" type="xs:date" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>From date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="to_date" type="xs:date" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>To date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="from_hour" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>From hour.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="to_hour" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>To hour.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="day_of_week" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>DaysOfWeek</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Day of week. SUNDAY, MONDAY, ... SATURDAY.
+						Possible values are listed in 'DaysOfWeek' code table.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>CalendarRecordStatuses</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Calendar record status. OPEN or CLOSED.
+						Possible values are listed in 'CalendarRecordStatuses' code-table.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,1232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>PO line can be a purchase for physical or electronic material.
+		PO lines are linked to a PO, which is sent to the vendor.
+		The POST PO line action is mainly used for creating a PO line in Alma, for an order that was purchased at a vendor system. See details [here|https://developers.exlibrisgroup.com/blog/Real-time-Acquisitions].
+		The following fields are required by the POST action: owner, type and title. If they were not supplied - 400 HTTP error will be returned.
+		There are other fields which are required for the PO line to be processed in Alma: vendor, vendor account, price and fund.
+		If any of these fields is missing, the PO Line will be created in Alma, but will be in the "In Review" list.
+		Note that PO line processing in Alma is asynchronous. This means that the response for POST action might not include status and alerts.
+		The GET action can be used afterwards to review the PO line situation.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="po_line" type="po_line" />
+	<xs:complexType name="po_line">
+		<xs:annotation>
+			<xs:documentation>PO line Object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="number" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The PO line number. Output parameter.
+					Should be used in subsequent queries regarding the PO line.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>POLineStatus</xs:codeTable>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The PO Line Status. Output parameter.
+Possible codes are listed in 'POLineStatus' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="owner" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The organization unit that is responsible of the PO line.
+Mandatory in POST.
+See [Get libraries API|https://developers.exlibrisgroup.com/alma/apis/conf/GET/gwPcGly021p29HpB7XTI4Dp4I8TKv6CAxBlD4LyRaVE=/37088dc9-c685-4641-bc7f-60b5ca7cabed].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>PurchaseType</xs:codeTable>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The code of the PO line type. Mandatory in POST.
+Possible codes are listed in 'PurchaseType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="vendor" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendors code. Mandatory for processing the PO line.
+If not supplied, the PO line will be created as "In Review". In the PUT action, a vendor can be changed only before the PO line was attached to a PO (i.e. statuses: "In Review", "Deferred", "Packaging").</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="vendor_account" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor account code. Mandatory for processing the PO line. If not supplied, the PO line will be created as "In Review".
+In the PUT action, a vendor account can be changed only before the PO line was attached to a PO (i.e. statuses: "In Review", "Deferred", "Packaging").
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="acquisition_method" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>AcquisitionMethod</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The code of the PO line acquisition method.
+Possible codes are listed in 'AcquisitionMethod' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+Default value is: VENDOR_SYSTEM. In the PUT action, the acq method can be changed only before the PO line was attached to a PO (i.e. statuses: "In Review", "Deferred", "Packaging").
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rush" type="xs:boolean" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Is it rush PO line. Optional.
+Default is False.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="cancellation_restriction" type="xs:boolean"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation> Indication whether the cancellation restriction note should display a warning upon the cancellation of a PO line.
+						Optional. Default is False.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="cancellation_restriction_note" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation> A warning to be displayed when canceling a PO line. Optional.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="price" type="amount" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The list price - i.e. price for a single copy of the item, before discount.
+See [here|https://developers.exlibrisgroup.com/blog/For-Vendors-Setting-up-a-real-time-acquisitions-workflow-with-ExLibris-Alma] for more details about pricing.
+Mandatory for processing the PO line. If not supplied, the PO line will be created as "In Review".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="discount" type="xs:string" minOccurs="0" maxOccurs="1">
+			  <xs:annotation>
+			      <xs:appinfo>
+			            <xs:tags>api get post</xs:tags>
+			      </xs:appinfo>
+			      <xs:documentation>Discount (in percentage).
+			In the POST action, the default for this field is the discount defined on the vendor account.
+			Overriding vendor account's discount with discount 0 is currently not supported.
+			Not supported with PUT action.
+				</xs:documentation>
+			   </xs:annotation>
+			</xs:element>
+			<xs:element name="vendor_reference_number" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The number given by the vendor to the PO line.
+						Optional. If exists, it can be used for identifying the PO line.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor_reference_number_type" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>VendorReferenceNumberType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation> The types of vendor reference number.
+Possible codes are listed in 'VendorReferenceNumberType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="source_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+						<xs:codeTable>AcqItemSourceType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The source in which the PO line was initially created.
+Possible codes are listed in 'AcqItemSourceType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+Note that the POST action will always populate this with "API" value.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="po_number" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The PO number that this PO Line is packed into.
+						Optional.
+						If supplied in the POST action, and exists in Alma - then the newly created PO line will be linked to this PO.
+						If not, the PO line will be linked to a PO when it will be packaged, according to the system's policy.
+						In the PUT action, the po_number can be changed only before the PO line was attached to a PO (i.e. statuses: "In Review", "Deferred", "Packaging").
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="invoice_reference" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Invoice reference number, if exists. Optional.
+In the PUT action, the invoice can be changed only before the PO line was attached to a PO (i.e. statuses: "In Review", "Deferred", "Packaging").
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="resource_metadata" type="resource_metadata"
+				minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Metadata related information.
+ If a matching bibliographic record is found - the PO line will be related to it. If not - a new bibliographic record will be created.
+See [here|https://developers.exlibrisgroup.com/blog/Create-PO-line-API-how-the-bibliographic-record-is-determined] for more details regarding the matching process.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fund_distributions" type="fund_distributions"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The Fund Distributions list.
+One fund is mandatory for processing the PO line. If not supplied, the PO line will be created as "In Review".
+See [Get funds API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021oUHLI4O/zpt8U7ewiJYRLM/d5b14609-b590-470e-baba-9944682f8c7e].</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="reporting_code" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The related Reporting Code. Optional.
+Possible codes are listed in 'HFundsTransactionItem.reportingCode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="secondary_reporting_code" type="xs:string" minOccurs="0" maxOccurs="1" >
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>SecondReportingCode</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Secondary reporting code. Optional.
+Possible values are listed in 'SecondReportingCode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tertiary_reporting_code" type="xs:string" minOccurs="0" maxOccurs="1" >
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>ThirdReportingCode</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Tertiary reporting code. Optional.
+Possible values are listed in 'ThirdReportingCode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+			<xs:element name="vendor_note" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor's note. Optional.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="receiving_note" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The related receiving note. Optional. </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="alerts" type="alerts" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of Alerts that blocked the processing of the PO line. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notes" type="notes" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the PO line related notes. Optional.
+In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="locations" type="locations" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Information about the locations in which the ordered items will be stored.
+Relevant only for Physical.
+See [Get locations API|https://developers.exlibrisgroup.com/alma/apis/conf/GET/gwPcGly021p29HpB7XTI4Dp4I8TKv6CAreHxJz3zVZbDL9ogrSqDbgE+r4q6vcJ0xBlD4LyRaVE=/37088dc9-c685-4641-bc7f-60b5ca7cabed].
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interested_users" type="interested_users"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of users to be annotated.
+Currently supported for GET action only.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="license" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license code. Relevant for electronic orders only, and is not supported for PUT.
+List of possible licenses can be retrieved using the [GET licenses API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021rX5UpTHfFaz+O7hZAX0F2e3JPdiJpJhUA=/d5b14609-b590-470e-baba-9944682f8c7e]
+			                 </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="url" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>URL for E-book item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="base_status" minOccurs="0" maxOccurs="1">
+				<xs:simpleType>
+					<xs:annotation>
+						<xs:appinfo>
+							<xs:tags>api get post</xs:tags>
+						</xs:appinfo>
+						<xs:documentation>The status of E-Book item.
+Possible values: ACTIVE, INACTIVE. Relevant only for Electronic.
+						</xs:documentation>
+					</xs:annotation>
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="ACTIVE" />
+						<xs:enumeration value="INACTIVE" />
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="access_provider" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Service Provider for E-book item.
+Relevant only for Electronic.
+In the PUT action, the access_provider can be changed only before the PO line was attached to a PO (i.e. statuses: "In Review", "Deferred", "Packaging").
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="manual_renewal" type="xs:boolean" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication if the renewal is done manually. Optional. Default is True.
+Relevant only for continuous and standing orders PO lines.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="renewal_cycle" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>RenewalCycle</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The renewal cycle.
+Relevant only if "manual renewal" is false.
+                        codes are listed in 'Renewal Cycle' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="subscription_from_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date that the subscription for the PO line began. Optional.
+Relevant only for continuous and standing orders PO lines.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subscription_to_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The the last day of the subscription for the PO line. Optional.
+Relevant only for continuous and standing orders PO lines.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="renewal_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The the date of renewal.
+Relevant and mandatory only for continuous and standing orders PO lines.
+If not supplied, the PO line will be created as "In Review".</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="renewal_period" type="xs:int" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The number of days before the renewal date to be reminded. Optional. Default is 0.
+Relevant only for continuous and standing orders PO lines.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="material_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Material type of the item.
+Possible codes are listed in the "PhysicalMaterialType" [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API] for Physical,
+and in the "electronicMaterialType" [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API] for Electronic.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="created_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The creation date of the PO line.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date in which the PO line status was last updated.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expected_receipt_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The date in which the po line is expected to be received at the library.
+           				If not specify, Alma will calculate estimation when the request will be sent to the vendor.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="fund_distributions">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>The Fund Distributions list. One fund is mandatory for processing the PO line.
+If not supplied, the PO line will be created as "In Review".
+			In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+See [Get funds API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021oUHLI4O/zpt8U7ewiJYRLM/d5b14609-b590-470e-baba-9944682f8c7e].
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="fund_distribution" type="fund_distribution"
+				minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific Fund Distributions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="fund_distribution">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific Fund Distributions.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="fund_code" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The fund code.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="amount" type="amount" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The amount which is to be paid by the fund.
+See [here|https://developers.exlibrisgroup.com/blog/For-Vendors-Setting-up-a-real-time-acquisitions-workflow-with-ExLibris-Alma] for more details about funding calculation.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="resource_metadata">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Metadata related information.
+ If a matching bibliographic record is found - the PO line will be related to it. If not - a new bibliographic record will be created.
+See [here|https://developers.exlibrisgroup.com/blog/Create-PO-line-API-how-the-bibliographic-record-is-determined] for more details regarding the matching process.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="mms_id" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The mms_id. Cannot be updated by the PUT action.
+If supplied in the POST action, match will be done based on it.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="title" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The title.
+Mandatory in the POST action if mms_id was not supplied.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="author" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Author - taken from inventory field 250 $b.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issn" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>issn</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="isbn" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>isbn</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="publisher" type="xs:string" maxOccurs="1"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The Publisher of the item.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="publication_place" type="xs:string"
+				maxOccurs="1" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The publication place of the item.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="publication_year" type="xs:string"
+				maxOccurs="1" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The publication year of the item.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor_title_number" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The value given by the vendor to the title.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="system_control_numbers" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of system control numbers, corresponding to the MARC 035 filed.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="system_control_number" minOccurs="0" type="xs:string"
+							maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<xs:tags>api get post put</xs:tags>
+								</xs:appinfo>
+								<xs:documentation>System control number.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="locations">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Information about the locations in which the ordered items will be stored.
+Relevant only for physical.
+See [Get locations API|https://developers.exlibrisgroup.com/alma/apis/conf/GET/gwPcGly021p29HpB7XTI4Dp4I8TKv6CAreHxJz3zVZbDL9ogrSqDbgE+r4q6vcJ0xBlD4LyRaVE=/37088dc9-c685-4641-bc7f-60b5ca7cabed].
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="location" type="location" minOccurs="1"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific location Distributions.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="location">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific location Distributions.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="quantity" type="xs:int" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The quantity per location.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="library" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+						<xs:codeTable>libraries</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The library which the location belongs to.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="shelving_location" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The location.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="holdings" type="holdings" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Relevant holding records. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="copies" type="copies" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Copies of item in a specific location.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="copies">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Copies of item in a specific location.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="copy" type="copy" minOccurs="1"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific copy of item in a specific location.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="copy">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific copy of item in a specific location.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="pid" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The item's pid. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="holding_id" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The item's related holding record id. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="barcode" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The item's barcode.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="item_policy" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+						<xs:codeTable>ItemPolicy</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The realted item policy.
+Possible codes are listed in 'ItemPolicy' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="receive_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date in which the item has arrived to the library.
+					If supplied in POST action the item will be created as received.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expected_arrival_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date in which the item is expected to arrive at the library. Note that this field is deprecated in the POST action: the expected_receipt_date on the po line level should be supplied.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="enumeration_a" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>enumeration A</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="enumeration_b" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>enumeration B</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="enumeration_c" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>enumeration C</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="chronology_i" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>chronology I</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="chronology_j" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>chronology J</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="chronology_k" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>chronology K</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>This item's description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="storage_location_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The ID number of the location where the item is stored.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="is_temp_location" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>If this location is the item's temporary location.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="permanent_library" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Permanent library.
+Relevant only if is_temp_location is True.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="permanent_shelving_location" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Permanent shelving location.
+Relevant only if is_temp_location is True.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string"/>
+	</xs:complexType>
+	<xs:complexType name="amount">
+		<xs:all>
+			<xs:annotation>
+				<xs:appinfo>
+					<xs:tags>api get post put</xs:tags>
+				</xs:appinfo>
+				<xs:documentation>The amount.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="sum" type="xs:string" maxOccurs="1"
+				minOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The sum.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="currency" maxOccurs="1" minOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>MT_CurrencySubset_by_CT_Currency_CT</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The currency.
+Possible values are listed in 'Currency_CT' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="interested_users">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>List of users to be annotated. Output parameter.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="interested_user" type="interested_user"
+				minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific user to be annotated.
+Currently supported for GET action only.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="interested_user">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific user to be annotated.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="primary_id" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>User's primary identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="first_name" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>User's first name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="last_name" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>User's last name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>User's email address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="alerts">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>List of Alerts that blocked the processing of the PO line. Output parameter.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="alert" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+						<xs:codeTable>MT_POLineAssertions_by_CT_AssertionCodes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Specific alert.
+Possible codes are listed in 'AssertionCodes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="notes">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>List of the PO line related notes.
+			In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="note" type="note" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific PO line related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="note">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific PO line related note.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="note_text" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The note's text.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="holdings">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Relevant holding records. Output parameter.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="holding" type="holding" minOccurs="1"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific holding record.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="holding">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific holding record.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="id" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The holding record's id. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string"/>
+	</xs:complexType>
+</xs:schema>

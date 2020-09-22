@@ -1,0 +1,254 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>
+				A set is a collection of items, such as users or the results of a repository search.
+				Sets may be used for publishing metadata in bulk, moving a group of records, or to run jobs.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_members.xsd"/>
+
+	<xs:element name="set" type="set"/>
+
+	<xs:complexType name="set">
+		<xs:annotation>
+			<xs:documentation>Set Object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The set id. Should be used in subsequent queries.
+						Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The set name.
+						Mandatory.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The set description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>SetType</xs:codeTable>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The type of the set (Logical/Itemized).
+						Possible codes are listed in 'SetType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].\
+						Mandatory.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="content" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>SetContentType</xs:codeTable>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The type of the content of the set.
+						Possible codes are listed in 'SetContentType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+						Mandatory.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="private" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>SetPrivacy</xs:codeTable>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Indication if the set is private.
+						Possible codes are listed in 'SetPrivacy' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+						Default is true.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="status" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>SetStatus</xs:codeTable>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Status of the set (Active/Inactive).
+						Possible codes are listed in 'SetStatus' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+						Default is 'Active'.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="status_date" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Date of the last status change of the set.
+						Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The sets' related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="created_by" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Creator of the set.
+						Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="created_date" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Creation date of the set.
+						Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="query" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The logical set's related query.
+						Relevant and mandatory for logical sets.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="number_of_members"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+				    	<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+			    	<xs:documentation>
+			       		A count of the number of members.
+				   		Output parameter.
+				 	</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:int">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="members" type="members" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						List members of the set.
+						After the set exists, it is possible to add/delete list of members using [Manage members API|https://developers.exlibrisgroup.com/alma/apis/conf/POST/gwPcGly021p29HpB7XTI4IF+TlIDCf8cxnd2EMydYPE=/37088dc9-c685-4641-bc7f-60b5ca7cabed].
+						The payload for this action is a set structure including the members list in this field.
+						The following id types are expected:
+						- Titles: mms_id
+						- Item: item pid or barcode
+						- User: primary id or other id
+						- PO line: pol number
+						- Collections : collection id
+						- Portfolios: portfolio id
+						- File: file id
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="additional_info" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Details about submission of a “create itemized set” job. Output parameter.
+                		This information will be returned when creating a set from MD import population (POST set with population parameter).
+                		The "link" attribute will include link for retrieving information about the submitted job instance.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional"/>
+	</xs:complexType>
+</xs:schema>

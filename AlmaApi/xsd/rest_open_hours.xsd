@@ -1,0 +1,26 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of library open hours and any exception.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_open_hour.xsd" />
+
+	<xs:element name="open_hours" type="open_hours" />
+
+	<xs:complexType name="open_hours">
+		<xs:annotation>
+			<xs:documentation>A list of library open hours, events and any exception.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="open_hour"
+				type="open_hour">
+				<xs:annotation>
+					<xs:documentation>Open hour object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

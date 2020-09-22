@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation></xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="sandbox_management_refresh" >
+	    <xs:complexType >
+	    	<xs:sequence>
+	    		<xs:element name="sandbox_inst_code" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+	    		<xs:element name="sandbox_environment_code" type="xs:string" maxOccurs="1" minOccurs="1"></xs:element>
+	    		<xs:element name="sandbox_type" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+	    		<xs:element name="sandbox_status" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+	    		<xs:element name="sandbox_status_date" type="xs:date" maxOccurs="1" minOccurs="0"></xs:element>
+	    		<xs:element name="sandbox_snapshot_date" type="xs:date" maxOccurs="1" minOccurs="0"></xs:element>
+	    		<xs:element name="sandbox_refresh_date" type="xs:date" maxOccurs="1" minOccurs="0"></xs:element>
+	    		<xs:element name="sandbox_active" type="xs:boolean" maxOccurs="1" minOccurs="0"></xs:element>
+	    		<xs:element name="sandbox_note" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
+	    	</xs:sequence>
+	    </xs:complexType>
+    </xs:element>
+
+</xs:schema>

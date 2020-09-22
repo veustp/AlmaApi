@@ -1,0 +1,450 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>For licensed material (such as subscriptions to electronic resources), a copy of the license is managed in Alma and associated with the licensed resources.
+		A specific license can be associated with the electronic resources during the purchasing workflow or later.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_notes.xsd"/>
+
+	<xs:element name="license" type="license" />
+
+	<xs:complexType name="license">
+		<xs:annotation>
+			<xs:documentation>License Object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license unique code. Mandatory.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license name. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+						<xs:codeTable>HLicense.type</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The type of the license (License, Amendment, Negotiation).
+					License managers can create amendments to existing licenses, allowing them to modify the properties of the base license.
+					Amendments added to a license override the terms of use of the base license.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="status" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>HLicense.status</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The status of the license.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="licensor" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license related vendor. This must be a valid vendor code. The 'desc' attribute includes the vendor name.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="signed_by" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The primary approver of the license.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="signed_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date on which the license was approved by the primary signer.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="second_party_signed_by" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The secondary approver of the license.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="second_party_signed_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date when the license was approved by the secondary signer.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="start_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license's start date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license's end date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="location" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>LicenseStorageLocation</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The physical location of the license.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="review_status" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>LicenseReviewStatuses</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The status of the license review.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="uri" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>the URI where the license is stored.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="licensing_agent" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>An organization (such as a subscription agent) or individual that facilitates a licensing transaction on behalf of one or more parties.
+					This must be a valid vendor code. The 'desc' attribute includes the vendor name.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="terms" type="terms" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the license's related terms.
+					In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="resources" type="resources" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the license's related electronic resources.
+					Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notes" type="notes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license's related notes.
+					In the PUT action the incoming list will replace the existing list.
+					If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="administrators" type="administrators" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The license's related administrators.
+					Relevant for licenses, not relevant for amendments.
+					In the PUT action the incoming list will replace the existing list.
+					If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amendments" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The number of amendments attached to the license.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:int">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="terms">
+		<xs:annotation>
+			<xs:documentation>List of the license's related terms.
+				In the PUT action the incoming list will replace the existing list.
+				If the incoming list is empty, the existing list will be deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="term" type="term" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A specific license's term.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="term">
+		<xs:annotation>
+			<xs:documentation>A specific license's term.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="code" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>LicenseTerms</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Possible codes are listed in the 'LicenseTerms' code table.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="value" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>LicenseTermsAndTypes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Possible values are according to the term.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="resources">
+		<xs:annotation>
+			<xs:documentation>List of the license's related electronic resources.
+					Output parameter.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="resource" type="resource" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A specific license's related electronic resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="resource">
+		<xs:annotation>
+			<xs:documentation>A specific license's related electronic resource.
+			Output parameter.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="pid" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The resource's pid.
+					Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The resource's name.
+					Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+						<xs:codeTable>ActiveResourcesTypes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The type of the resource (Portfolios or Electronic Collection).
+					Possible codes are listed in the 'ActiveResourcesTypes' code table.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string"/>
+	</xs:complexType>
+
+	<xs:complexType name="administrators">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>List of administrators. Relevant for licenses, not relevant for amendments.
+			In the PUT action the incoming list will replace the existing list.
+			If the incoming list is empty, the existing list will be deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="administrator" type="administrator" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Specific administrator.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="administrator">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific administrator.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="primary_id" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Administrator's primary identifier.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="first_name" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Administrator's first name. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="last_name" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Administrator's last name. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Administrator's preferred email address. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string"/>
+	</xs:complexType>
+
+</xs:schema>

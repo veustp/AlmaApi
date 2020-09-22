@@ -1,0 +1,24 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>List of the members in the set.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="rest_member.xsd"/>
+	<xs:element name="members" type="members"/>
+	<xs:complexType name="members">
+		<xs:annotation>
+			<xs:documentation>A list of members of the set.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="member" type="member">
+				<xs:annotation>
+					<xs:documentation>Member object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of sets.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

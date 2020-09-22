@@ -1,0 +1,26 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>A list of the Owners of a Reading List.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_owner.xsd" />
+
+	<xs:element name="owners" type="owners" />
+
+	<xs:complexType name="owners">
+		<xs:annotation>
+			<xs:documentation>A list of owners.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="owner" type="owner">
+				<xs:annotation>
+					<xs:documentation>An owner object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+</xs:schema>
+

@@ -1,0 +1,98 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Representation File</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="representation_file" type="representation_file" />
+
+	<xs:complexType name="representation_file">
+		<xs:annotation>
+			<xs:documentation>File.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="pid" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>File Id.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="thumbnail_url" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>URL to view the file thumbnail.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="label" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>File label.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="size" type="xs:long" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>File size (bytes).</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="path" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>File path. When POST, should contain a reference to a file in the library's S3 upload folder (i.e. 01UNI_INST/upload/scratch/1234/file.png). </xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="url" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>File URL. Requires expand=url parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fulltext" type="fulltext" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+			<xs:documentation>Fulltext information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="fulltext">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Fulltext information.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="fulltext_format" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Format of fulltext.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fulltext_url" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>URL of fulltext object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

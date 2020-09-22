@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>An invoice line.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="invoice_line" type="invoice_line" />
+	<xs:complexType name="invoice_line">
+		<xs:annotation>
+			<xs:documentation>Invoice line Object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Unique identifier of the invoice line.
+						Output parameter.
+						Should be used in subsequent queries regarding the line.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>InvoiceLinesTypes</xs:codeTable>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The type of invoice line.
+Possible codes are listed in 'InvoiceLinesTypes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API]. Default is 'Regular'.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="number" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The invoice line number. Optional.
+If not supplied in POST action, Alma will generate it.
+Cannot be updated by the PUT action.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>InvoiceLineStatus</xs:codeTable>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The invoice line status. Output parameter.
+Possible codes are listed in 'InvoiceLineStatus' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="po_line" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The number of the PO line which is connected to the invoice line. Optional.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="price" type="xs:decimal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The price of the invoice line. Default is the PO line price.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="total_price" type="xs:decimal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The total price of the specific invoice line. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="quantity" type="xs:int" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The quantity for the invoice line. Default is the PO line quantity.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vat_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>VAT related note. Relevant only if VAT is defined at the invoice level.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="check_subscription_date_overlap" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether Alma should check if the subscription date overlaps with those of any other lines.
+					Relevant only when a continuous PO line is selected. Default is true.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fully_invoiced" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether the PO line has been fully invoiced. This creates a disencumbrance transaction for any encumbered amounts.
+					Relevant only when a one-time PO line is selected. Default is false.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subscription_from_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date from which the invoice line is covered.
+Relevant only when a continuous PO line is selected.
+Mandatory if check_subscription_date_overlap is true.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subscription_to_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date to which the invoice line is covered.
+Relevant only when a continuous PO line is selected.
+Mandatory if check_subscription_date_overlap is true.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="additional_info" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A note.
+Relevant only when a continuous PO line is selected.
+Mandatory if the Subscription from date and Subscription to date fields are empty.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="release_remaining_encumbrance" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether Alma should create a disencumbrance transaction to release encumbrance amounts that remain after paying an invoice.
+Relevant only when a continuous PO line is selected.
+Relevant only when the total invoice line price is lower than the PO line price. Default is false.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+
+		<xs:element name="reporting_code" minOccurs="0" maxOccurs="1" >
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>HFundsTransactionItem.reportingCode</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The main Reporting Codes.
+Possible values are listed in 'HFundsTransactionItem.reportingCode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="secondary_reporting_code" minOccurs="0" maxOccurs="1" >
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>SecondReportingCode</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Secondary reporting code.
+Possible values are listed in 'SecondReportingCode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="tertiary_reporting_code" minOccurs="0" maxOccurs="1" >
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>ThirdReprotingCode</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>Tertiary reporting code.
+Possible values are listed in 'ThirdReprotingCode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="note" type="xs:string" minOccurs="0"  maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Free text note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="invoice_line_vat" type="invoice_line_vat"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>VAT charge that is included in the invoice line.
+Relevant only if the invoice is defined as 'vat_per_invoice_line'.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fund_distributions" type="fund_distributions"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The Fund Distributions list.
+Mandatory for processing the invoice line.
+see [Get funds API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021oUHLI4O/zpt8U7ewiJYRLM/d5b14609-b590-470e-baba-9944682f8c7e].</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+		<xs:complexType name="fund_distributions">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>The Fund Distributions list.
+Mandatory for processing the invoice line.
+[Get funds API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021oUHLI4O/zpt8U7ewiJYRLM/d5b14609-b590-470e-baba-9944682f8c7e].
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="fund_distribution" type="fund_distribution"
+				minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Specific Fund Distributions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="fund_distribution">
+		<xs:annotation>
+		<xs:appinfo>
+			<xs:tags>api get post put</xs:tags>
+		</xs:appinfo>
+			<xs:documentation>Specific Fund Distribution.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="fund_code" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The fund code.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="percent" type="xs:decimal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Percentage which is to be paid by the fund.
+In POST and PUT actions, percentage or vat_amount should be supplied, but not both.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="amount" type="xs:decimal" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+					<xs:tags>api get post put</xs:tags>
+				</xs:appinfo>
+					<xs:documentation>The amount which is to be paid by the fund.
+In POST and PUT actions, percentage or vat_amount should be supplied, but not both.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="invoice_line_vat">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>VAT charge that is included in the invoice line.
+Relevant only if the invoice is defined as 'vat_per_invoice_line'.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="vat_code" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>VAT code to assign to the invoice.
+If supplied, percentage and vat_amount will be defined accordingly.
+Possible values are according to the VATCodes_MT mapping table.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="percentage" type="xs:decimal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>VAT Percentage of the invoice line price.
+In POST and PUT actions, percentage or vat_amount should be supplied, but not both.
+If vat_code is defined, percentage and vat_amount should be left empty in these actions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vat_amount" type="xs:decimal" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Amount of VAT to be paid on the invoice line.
+In POST and PUT actions, percentage or vat_amount should be supplied, but not both.
+If vat_code is defined, percentage and vat_amount should be left empty in these actions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

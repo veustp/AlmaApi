@@ -1,0 +1,139 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>An object representation of an authority Record.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="authority" type="authority"/>
+	<xs:complexType name="authority">
+		<xs:annotation>
+			<xs:documentation>Authority record object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="mms_id" type="xs:long" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>authority record identifier.
+					Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="record_format" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Catalog format: marc21_authority, unimarc_authority, kormarc, cnmarc_authority or dc. Default is marc21_authority.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="title" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The title of the authority record.
+					Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="created_by" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Creator of the record.
+					Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="created_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The record creation date.
+					Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="last_modified_by" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The primary id of the last user which modify the record.
+					Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="last_modified_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Date by which the last change to the record was made.
+						Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vocabulary"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The vocabulary code. The "desc" attribute is the vocabulary name.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:any minOccurs="0" maxOccurs="unbounded" namespace="##other" processContents="lax"/>
+			<xs:element name="warnings" type="warnings" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Warnings returned by the validation process when creating or updating an authority record</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="link" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="warnings">
+		<xs:annotation>
+			<xs:documentation>List of warnings returned by the validation process when creating or updating an authority record</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="warning" type="warning" minOccurs="0"
+					maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specific warning.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="warning">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Validation warning.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Validation warning message.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,1549 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Vendor represents suppliers of library materials. A vendor can be of the following types:
+	*Material supplier/Subscription agent - Supplies the reading material or the subscription to the material
+	*Access provider - Holds the access privileges to services which manage e-resources. Access is managed via interfaces.
+	*Licensor - Holds the license of electronic resources.
+	*Governmental - Indicates that the vendor is to receive use tax (VAT) for an invoice payment. The Governmental vendor's invoices handle only use tax on invoices, ensuring that tax payments are handled separately from the regular invoice charges and go directly to the government. Use tax represents a tax on the usage of library items, and is expended from the same funds as the actual invoice charges.
+	Note that a vendor can be of few of the above type - for example, a vendor can be access provider and Licensor.
+	Governmental vendor cannot be of more types.
+	Only a single Governmental vendor can be defined for an insitution.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_notes.xsd" />
+
+	<xs:element name="vendor" type="vendor" />
+
+	<xs:complexType name="vendor">
+		<xs:annotation>
+			<xs:documentation>Vendor Object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor code. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor name. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="additional_code" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor additional code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="financial_sys_code" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A code for the financial system account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="national_tax_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor's a national tax ID number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+						<xs:codeTable>VendorSearchStatusFilter</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The status of the vendor. Default value is Active.
+					Possible codes are listed in 'VendorSearchStatusFilter' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="liable_for_vat" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication if invoices must be paid with VAT included.
+					For Governmental vendor, this field must be set to true in order to collect VAT for an invoice.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>UserPreferredLanguage</xs:codeTable>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor's language.
+					Possible codes are listed in 'User Preferred Language' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					Default is the institution language.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="material_supplier" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Indication if the vendor is a material_supplier. 
+						Mandatory when creating a vendor.
+						At least on of the following fields must be true: material_supplier, access_provider, licensor, governmental.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="access_provider" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Indication if the vendor is a access_provider. 
+						Mandatory when creating a vendor.
+						At least on of the following fields must be true: material_supplier, access_provider, licensor, governmental.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="licensor" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Indication if the vendor is a licensor. 
+						Mandatory when creating a vendor.
+						At least on of the following fields must be true: material_supplier, access_provider, licensor, governmental.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="governmental" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Indication if the vendor is a governmental.
+						Mandatory when creating a vendor.
+						At least on of the following fields must be true: material_supplier, access_provider, licensor, governmental.
+					    If Governmental is true, material_supplier, access_provider and licensor must be false.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="tax_percentage" type="xs:string" maxOccurs="1"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>A numerical value for the tax to be administered.
+					Relevant only for governmental vendor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor_libraries" type="libraries"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of libraries that the vendor works with.
+					If not specified, the default will be the institution including all sub units.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor_currencies" type="currencies"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of currencies with which the vendor operates.
+					If not specified, all the institution's supported currencies will be considered as supported.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="accounts" type="accounts" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of vendor related accounts.
+					For a material_supplier vendor, at least one active account must be defined.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contact_persons" type="contact_persons" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the vendor's contacts persons. Output Parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interfaces" type="interfaces" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the vendor's related interfaces.
+					Relevant only for an Access Provider vendor.
+					For an Access Provider vendor, at least one interface must be defined.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contact_info" type="contact_info"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the vendor's contacts information.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="edi_info" type="edi_info" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor's EDI related information.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notes" type="notes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The vendor's related notes.
+					In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="contact_info">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>List of the contacts information.
+				In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="addresses" type="addresses" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of addresses.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="emails" type="emails" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of email addresses.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phones" type="phones" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of phone numbers.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="web_addresses" type="web_addresses" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of web addresses.
+					Relevant only for vendor and not for an account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="emails">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>List of vendor's email addresses.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="email" type="email" minOccurs="1"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specific vendor's email address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="email">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Specific vendor's email address.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="email_address" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The email address. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The email address' related description.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email_types">
+				<xs:complexType>
+					<xs:annotation>
+						<xs:appinfo>
+							<xs:tags>get post put</xs:tags>
+						</xs:appinfo>
+						<xs:documentation>The different email types. Mandatory.</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+
+						<xs:element name="email_type" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<xs:codeTable>MT_UserRecordType2EmailType_by_CT_UserEmailTypes_source1:organization_source2:VENDOR</xs:codeTable>
+								</xs:appinfo>
+								<xs:documentation>Possible codes are listed in the 'UserEmailTypes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="desc" type="xs:string" use="optional" />
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="preferred" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:appinfo>
+					<xs:tags>get post put</xs:tags>
+				</xs:appinfo>
+				<xs:documentation>Indication whether the email address is the preferred one.
+				Only one address can be defined as preferred.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+	<xs:complexType name="phones">
+		<xs:annotation>
+			<xs:documentation>List of vendor's phone numbers.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="phone" type="phone" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specific vendor's phone number.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="phone">
+		<xs:annotation>
+			<xs:documentation>Specific vendor's phone number.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="phone_number" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The phone number. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="phone_types">
+				<xs:annotation>
+					<xs:documentation>The different Phone types. Mandatory.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>Phone types.</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+
+						<xs:element name="phone_type" minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<xs:codeTable>MT_UserRecordType2PhoneType_by_CT_UserPhoneTypes_source1:organization_source2:VENDOR</xs:codeTable>
+								</xs:appinfo>
+								<xs:documentation>Possible values are listed in the 'UserPhoneTypes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="desc" type="xs:string" use="optional" />
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+
+		<xs:attribute name="preferred" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Indication whether the phone number is the preferred one.
+					Only one address can be defined as preferred.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="preferred_sms" type="xs:boolean"
+			default="false">
+			<xs:annotation>
+				<xs:documentation>Indication whether the phone number is the preferred one for SMS sending.
+				Only one phone number can be defined as preferred.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+
+	<xs:complexType name="addresses">
+		<xs:annotation>
+			<xs:documentation>List of vendor's addresses.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="address" type="address" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specific vendor's address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="address">
+		<xs:annotation>
+			<xs:documentation>Specific vendor's address.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="line1" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line 1 of the address. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="line2" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line 2 of the address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="line3" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line 3 of the address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="line4" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line 4 of the address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="line5" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Line 5 of the address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="city" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The address' relevant city. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="state_province" type="xs:string"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The address' relevant state.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="postal_code" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The address' relevant postal code.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="country" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>CountryCodes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The address' relevant country.
+					Possible codes are listed in the 'Country Codes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="address_note" type="xs:string"
+				minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The address' related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="start_date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date from which the address is deemed to be active.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="end_date" type="xs:date" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The date after which the address is no longer active.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="address_types">
+				<xs:annotation>
+					<xs:documentation>Address types. Mandatory.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:annotation>
+						<xs:documentation>Address types.</xs:documentation>
+					</xs:annotation>
+					<xs:sequence>
+						<xs:element name="address_type" minOccurs="0"
+							maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:appinfo>
+									<xs:codeTable>MT_UserRecordType2AddressType_by_CT_UserAddressTypes_source1:organization_source2:VENDOR</xs:codeTable>
+								</xs:appinfo>
+								<xs:documentation>Possible values are listed in the 'UserAddressTypes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+								</xs:documentation>
+							</xs:annotation>
+							<xs:complexType>
+								<xs:simpleContent>
+									<xs:extension base="xs:string">
+										<xs:attribute name="desc" type="xs:string" use="optional" />
+									</xs:extension>
+								</xs:simpleContent>
+							</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="preferred" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>Indication whether the address is the preferred one.
+				Only one address can be defined as preferred.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="web_addresses">
+		<xs:annotation>
+			<xs:documentation>List of vendor's web addresses.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="web_address" type="web_address" minOccurs="0"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Specific vendor's web address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="web_address">
+		<xs:annotation>
+			<xs:documentation>Specific vendor's web address.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="url" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The URL. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="url_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>UserWebAddressTypes</xs:codeTable>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The type of the URL.
+					Possible codes are listed in 'UserWebAddressTypes' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="description" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The web address description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="note" type="xs:string">
+				<xs:annotation>
+					<xs:documentation>The web address related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="edi_info">
+		<xs:all>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A unique code for the vendor, per institution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>EdiType</xs:codeTable>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The type of EDI.
+			Possible codes are listed in 'EdiType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="naming_convention" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>EDINamingConvention</xs:codeTable>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The naming convention of the EDI.
+			Possible codes are listed in 'EDINamingConvention' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="vendor_format" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>EdiPreference</xs:codeTable>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The format of EDI communication.
+			Possible codes are listed in 'EdiPreference' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="invoices" type="xs:boolean" minOccurs="0" default="false">
+				<xs:annotation>
+					<xs:documentation>Indication whether the vendor submits invoices via EDI files.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="po_lines" type="xs:boolean" minOccurs="0" default="false">
+				<xs:annotation>
+					<xs:documentation>Indication whether PO lines are sent to the vendor via EDI files.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="additional_order_number" type="xs:boolean" minOccurs="0" default="false">
+				<xs:annotation>
+					<xs:documentation>Indication whether additional PO number should be included in the EDI file sent to the vendor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="include_fund_code" type="xs:boolean" minOccurs="0" default="false">
+				<xs:annotation>
+					<xs:documentation>Indication whether fund code should be included in the EDI files sent to the vendor and received from the vendor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="do_not_prorate" type="xs:boolean" minOccurs="0" default="false">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="fund_code" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The fund from which overhead and discount amounts are charged.
+			Relevant only when 'Do not prorate' is true.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ftp_description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Optional description of the EDI submission details.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="server_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The IP address of the FTP server receiving the EDI files.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="port_number" type="xs:int" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The port to be used on the FTP server, if the connection is not secure. This is generally port 21.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user name for logging on to the FTP server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="password" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The password for the FTP server.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="input_path" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name of the subdirectory in which the incoming invoice EDI files are to be stored.
+			By default, Alma displays invoices in this field. If you leave this field empty, Alma searches for incoming files in the root directory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="output_path" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name of the subdirectory in which the outgoing PO EDI files are to be stored.
+			By default, Alma displays orders in this field. If you leave this field empty, Alma places the PO EDI files in the root directory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="allow_navigation" type="xs:boolean" minOccurs="0" default="true">
+				<xs:annotation>
+					<xs:documentation>Indication whether access to other areas of the FTP site is enabled.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="secured_ftp" type="xs:boolean" minOccurs="0" default="false">
+				<xs:annotation>
+					<xs:documentation>Indication whether the FTP server is secured.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="send_command" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+						<xs:codeTable>FTPSend</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The send command. Possible codes are listed in 'FTPSend' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="passive_mode" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Currently not in use.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ftp_mode" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+						<xs:codeTable>FTPMode</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The mode used for sending the outgoing EDI files.
+			Possible codes are listed in 'FTPMode' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="per_organization_units" type="per_organization_units" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of edi codes and types for specific libraries, if used by the vendor.
+					One entry must be defined for the institution and its edi code and type.
+					In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ean_accounts" type="ean_accounts" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of mappings of EAN (Envelope Address Node) code to the vendor account.
+					In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="per_organization_units">
+		<xs:annotation>
+			<xs:documentation>List of edi codes and types for specific libraries, if used by the vendor.
+			One entry must be defined for the institution and its edi code and type.
+			In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="per_organization_unit" type="per_organization_unit" minOccurs="1"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>EDI code and type for specific library/institution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="per_organization_unit">
+		<xs:annotation>
+			<xs:documentation>EDI code and type for specific library/institution.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="organization_unit" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The organization unit for which the edi code and type are defined.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="edi_code" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The edi code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="edi_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>EdiType</xs:codeTable>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The type of EDI.
+			Possible codes are listed in 'EdiType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API]. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="ean_accounts">
+		<xs:annotation>
+			<xs:documentation>List of mappings of EAN (Envelope Address Node) code to the vendor account.
+			In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="ean_account" type="ean_account" minOccurs="1"
+				maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>EDI code and type for specific library/institution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="ean_account">
+		<xs:annotation>
+			<xs:documentation>Mapping of EAN (Envelope Address Node) code to the vendor account.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="account" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The code of the vendor account to map. Should be a valid account of this vendor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ean_code" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The EAN code.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="currencies">
+		<xs:annotation>
+			<xs:documentation>List of currencies with which the vendor operates.
+			If not specified, all the institution's supported currencies will be considered as supported.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="currency" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>Currency_CT</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The fund's related currency.
+					Possible values are listed in 'Currency Code Table' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+
+	<xs:complexType name="contact_persons">
+		<xs:sequence>
+			<xs:element name="contact_person" type="contact_person" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="contact_person">
+		<xs:all>
+			<xs:element name="first_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The contact person's first name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="last_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The contact person's last name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="libraries">
+		<xs:annotation>
+			<xs:documentation>List of libraries related to the vencor or the account.
+			If not specified, the default will be the institution including all sub units.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="library" type="library" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A specific library that the vendor works with.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="library">
+		<xs:annotation>
+			<xs:documentation>
+				A specific library that the vendor works with.
+				Note that the include_sub_units attribute is mandatory.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Code of the specific library.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="include_sub_units" type="xs:boolean"/>
+	</xs:complexType>
+	<xs:complexType name="payment_methods">
+		<xs:annotation>
+			<xs:documentation>List of supported payment methods.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="payment_method" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>PaymentMethod</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The account's payment method.
+			Possible values are listed in 'PaymentMethod' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="accounts">
+		<xs:annotation>
+			<xs:documentation>List of vendor related accounts.
+		For a material_supplier vendor, at least one active account must be defined.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="account" type="account" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A specific vendor account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="account">
+		<xs:annotation>
+			<xs:documentation>A specific vendor account.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A code for the account. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A description for the account. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="financial_sys_code" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A code for the financial system account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+						<xs:codeTable>VendorSearchStatusFilter</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The status of the account.
+			Possible codes are listed in VendorSearchStatusFilter [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="account_libraries" type="libraries" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of libraries that the vendor works with.
+			If not specified, the default will be the institution including all sub units.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="discount_percent" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A discount percentage for the account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A note for the account.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="payment_methods" type="payment_methods" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>List of supported payment methods.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expected_receipt_interval" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>When creating a PO line for a physical resource, this value appears by default in the same field on the PO Line Summary page.
+			It is added to the current date to determine the expected receipt date.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="claiming_interval" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>When creating a PO line, this value appears by default in the same field on the PO Line Summary page.
+			It is added to the expected receipt date to determine when a PO line is sent to the Claims task list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expected_invoice_interval" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Currently not in use.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expected_activation_interval" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>hen creating a PO line for an e-resource, this value appears by default in the same field on the PO Line Summary page.
+			It is added to the current date to determine the expected activation date of the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="renewal_evaluation_interval" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The number of days after the evaluation period that renewal can be performed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="subscription_interval" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>When creating a PO line, this value appears by default in the Claiming grace period field on the PO Line Summary page.
+			It is added to the expected activation date to determine when a PO line for an e-resource is sent to the Claims task list.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contact_info" type="contact_info" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the account's contacts information. Note that an account cannot have web_addresses.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="interfaces">
+		<xs:annotation>
+			<xs:documentation>List of the vendor's related interfaces.
+		Relevant only for an Access Provider vendor.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="interface" type="interface" minOccurs="1" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A specific vendor interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="interface">
+		<xs:annotation>
+			<xs:documentation>A specific vendor interface.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The interface name. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The interface description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+						<xs:codeTable>VendorSearchStatusFilter</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The status of the interface.
+			Possible codes are listed in VendorSearchStatusFilter [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="main_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The interface's related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="contact_info" type="contact_info" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of the interface's contacts information. Note that an intefrace cannot have web_addresses.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="admin_info" type="admin_info" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Administrative details about the interface.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statistics" type="statistics" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="access_info" type="access_info" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interface_notes" type="notes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The interface's related notes.
+			In the PUT action the incoming list will replace the existing list. If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="admin_info">
+		<xs:annotation>
+			<xs:documentation>Administrative details about the interface.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="user_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user id for security purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_password" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user password for security purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_password_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user password's related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="online_admin_module" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indication whether the resource attributes can be directly modified online by the subscribing institution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="admin_uri" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The URI of the online administration module.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="admin_uri_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>AdminURIType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The type of online administration module URI.
+			Possible values are listed in 'AdminURIType' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="open_url_compliant" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indication whether the electronic content and its content is compliant with an open URI.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="linking_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about external linking, such as implementation details, or other notes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hardware_req_internal" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about hardware requirements and restrictions - not visible to end users.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="hardware_req_public" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about hardware requirements and restrictions - visible to end users.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="software_req_internal" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about software requirements - not visible to end users.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="software_req_public" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about software requirements - visible to end users.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="maintenance_win_value" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The provider's regularly scheduled downtime window for this product.
+			The recurring period of time reserved by the product provider for technical maintenance activities, during which online access may be unavailable.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="incident_log" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>A log of downtime and problem reports, as well as their resolution.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="admin_documentation" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about and/or location of documentation available for product administrators.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="statistics">
+		<xs:annotation>
+			<xs:documentation>Statistical details about the interface.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="user_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user id for security purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_password" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user password for security purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_pass_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user password's related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="available" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indication whether the usage statistics are available for the resource.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="delivery_method" minOccurs="0" maxOccurs="1" default="ONLINE">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>UsageStatsDeliveryMethod</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The manner in which statistics are made available.
+			Possible values are listed in 'UsageStatsDeliveryMethod' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="format" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>UsageStatsFormat</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The formats in which statistics are made available. Multiple formats can be entered.
+			Possible values are listed in 'UsageStatsFormat' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="frequency" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>UsageStatsFrequency</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The frequency with which statistics are made available.
+			Possible values are listed in 'UsageStatsFrequency' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="online_location" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The online location where statistics can be accessed, such as a URL or file path.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="delivery_address" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The contact name within the library.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="locally_stored" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about and/or links to locally stored data.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="statistics_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Information about usage-related statistics.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="access_info">
+		<xs:annotation>
+			<xs:documentation/>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="user_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user id for security purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_password" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user password for security purposes.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="user_pass_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The user password's related note.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ip_address_reg_method" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>IpAddressRegMethod</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The method by which IP addresses are sent to the product provider.
+			Possible values are listed in 'IpAddressRegMethod' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ip_address_reg_instructions" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The URI at which IP addresses are registered, the email address or contact role to which updates are sent, or other relevant instructions.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="ip_address_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Additional notes pertaining to IP address information.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="access_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="primary_access_uri" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The method of access, the location, and the file name of an e-product.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="interface_uri" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="implemented_auth_method" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>ImplementedAuthMethod</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The Method of authorization.
+			Possible values are listed in 'ImplementedAuthMethod' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="local_persistent_uri" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation/>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

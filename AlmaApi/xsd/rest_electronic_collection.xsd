@@ -1,0 +1,535 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Alma provides and uses electronic collections to organize and prepare electronic resources for delivery and publication.
+		Resources can include electronic journals, portfolios, databases, or e-books, among others; they can be accessed through a service such as full-text, using bibliographic records and URLs, or by a combination of these.
+		Electronic collections are available (to be published to Primo) after they have been activated.
+		The exception to this is database type electronic collections, which are available to be published as soon as they are defined by a URL and an associated unsuppressed bibliographic record.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_notes.xsd"/>
+ <xs:include schemaLocation="rest_group_settings.xsd"/>
+
+	<xs:element name="electronic_collection" type="electronic_collection" />
+
+	<xs:complexType name="electronic_collection">
+		<xs:annotation>
+			<xs:documentation>Electronic collection Object.</xs:documentation>
+		</xs:annotation>
+
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Identifier of the electronic collection in Alma. Output parameter.
+						Should be used in subsequent queries regarding the collection.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="is_local" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether the collection is linked to CZ or local. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="public_name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The name to display in the discovery search results. Mandatory.
+					In the PUT action, public_name can be modified only for local collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="public_name_override" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The name to display in place of the public name for this electronic collection.
+					In the PUT action, public_name_override can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The description to display in the search results.
+					In the PUT action, description can be modified only for local collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="internal_description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A description for internal reference only.
+					In the PUT action, internal_description can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="library" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The code of the owning library associated with the electronic collection.
+					See [Get libraries API|https://developers.exlibrisgroup.com/alma/apis/conf/GET/gwPcGly021p29HpB7XTI4Dp4I8TKv6CAxBlD4LyRaVE=/37088dc9-c685-4641-bc7f-60b5ca7cabed] for list of possible libraries.
+					In the PUT action, library can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="type" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>isAggregator</xs:codeTable>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The type of the electronic collection. Mandatory.
+					Possible code are listed in isAggregator [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					In the PUT action, type can be modified only for local collections.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="interface" type="interface" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Interface related information.
+					In the PUT action, interface can be modified only for local collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="process_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						How the work order is currently being processed, if the information is available. Output parameter.
+						Possible codes are listed in PROCESSTYPE [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+						<xs:codeTable>PROCESSTYPE</xs:codeTable>
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="access_type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						The licensing rights of a collection when, for example, a one-time purchase fee agreement has been made for perpetual access to the electronic collection.
+						The default is Current.
+						Possible codes are listed in CollectionAccessType [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+						In the PUT action, access_type can be modified for all collections.
+					</xs:documentation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+						<xs:codeTable>CollectionAccessType</xs:codeTable>
+					</xs:appinfo>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="po_line"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Related PO line number.
+						See [PO line API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021rXkIgBNjmJH3xbH4bTA9gkebw0MwjJ3BLlaodR+OhCSw==/d5b14609-b590-470e-baba-9944682f8c7e].
+						In the PUT action, po_line can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="activation_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get put post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date on which the resource was marked as activated.
+					In the PUT action, activation_date can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="expected_activation_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get put post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The expected activation date.
+					In the PUT action, expected_activation_date can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="license"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Related license code.
+						See [License API|https://developers.exlibrisgroup.com/alma/apis/acq/GET/gwPcGly021rX5UpTHfFaz+O7hZAX0F2e2z5hF5pcFSGPjVroV8ochg==/d5b14609-b590-470e-baba-9944682f8c7e].
+						In the PUT action, license can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="additional_po_lines" type="additional_po_lines" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A list of any additional PO lines associated with this collection.
+					In the PUT action, additional_po_lines can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="alternative_title" type="xs:string" minOccurs="0" maxOccurs="1">
+ 				<xs:annotation>
+ 					<xs:appinfo>
+ 						<xs:tags>api get post put</xs:tags>
+ 					</xs:appinfo>
+ 					<xs:documentation>For future use</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:element>
+ 			<xs:element name="source" type="xs:string" minOccurs="0" maxOccurs="1">
+ 				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+ 					</xs:appinfo>
+ 					<xs:documentation>For future use</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:element>
+ 			<xs:element name="creator" type="xs:string" minOccurs="0" maxOccurs="1">
+ 				<xs:annotation>
+ 					<xs:appinfo>
+ 						<xs:tags>api get post put</xs:tags>
+ 					</xs:appinfo>
+ 					<xs:documentation>For future use</xs:documentation>
+ 				</xs:annotation>
+ 			</xs:element>
+			<xs:element name="url"  type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Electronic Collection Level URL.
+					In the PUT action, url can be modified only for local collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="url_override"  type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>the override URL.
+					In the PUT action, url_override can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="free" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>IsFree</xs:codeTable>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Whether the collection is free.
+					Possible code are listed in IsFree [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					Default is Not Free.
+					In the PUT action, free can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="proxy_enabled"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>BooleanYesNo</xs:codeTable>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Whether to enable a proxy.
+					Possible code are listed in BooleanYesNoNumericCode [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					In the PUT action, proxy_enabled can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="proxy"  type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A proxy profile code. This must be a valid code of an integration profile of "Resolver proxy" type.
+					In the PUT action, proxy can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="language"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>marcLanguage</xs:codeTable>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The language of the collection.
+					Possible code are listed in marcLanguage [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					In the PUT action, language can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="category" type="xs:string"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The subject that the online collection handles (optional). This field has no functional use.
+					In the PUT action, category can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="resource_metadata" type="resource_metadata" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Information of the related BIB record.
+					Relevant only if the e-collection is related to a BIB record.
+					In the PUT action, resource_metadata can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="portfolios"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+			       		A count of the number of portfolios. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:int">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element  name="authentication_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A note related to authentication (to display in the discovery system).
+					In the PUT action, authentication_note can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="public_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Information about the service (to display in the discovery system.)
+					In the PUT action, public_note can be modified for all collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notes" type="notes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The e-collection's related notes.
+					In the PUT action the incoming list will replace the existing list.
+					If the incoming list is empty, the existing list will be deleted.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="group_settings" type="group_settings" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>List of access restrictions based on location.
+					In the PUT action the incoming list will replace the existing list.
+					If the incoming list is empty, the existing list will be deleted.
+					In the PUT action, group_settings can be modified for all collections.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="resource_metadata">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get post put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Information of the related BIB record.
+					Relevant only if the e-collection is related to a BIB record.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="mms_id" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The mms_id.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The title. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="author" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The author. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="issn" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The ISSN. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="interface">
+		<xs:annotation>
+			<xs:documentation>Interface related information.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name"  type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Name of the related interface.
+					In the PUT action, this can be modified only for local collections.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="vendor"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Vendor code related to the interface. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="additional_po_lines">
+		<xs:annotation>
+			<xs:documentation>A list of any additional PO lines associated with this collection.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="number"  minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Number of the Additional related PO line.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+</xs:schema>

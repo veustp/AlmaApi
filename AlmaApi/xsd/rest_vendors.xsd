@@ -1,0 +1,32 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of vendors in Alma.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_vendor.xsd" />
+
+	<xs:element name="vendors" type="vendors" />
+
+	<xs:complexType name="vendors">
+		<xs:annotation>
+			<xs:documentation>A list of Vendors.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="vendor" type="vendor">
+				<xs:annotation>
+					<xs:documentation>vendor object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of vendors. This can be used when
+					retrieving the vendors list using pagination.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

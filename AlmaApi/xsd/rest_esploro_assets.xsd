@@ -1,0 +1,630 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>Information about Esploro Asset and all related data
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="esploroDeleteAssetApp">
+		<xs:annotation>
+			<xs:documentation>Optional element providing "Decline note" while declining deposit.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="decline.note" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	
+	<xs:element name="esploroAssetsApp">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get put</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Esploro Assets Object.</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="esploro.asset" type="esploroAssetApp" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+
+	<xs:complexType name="esploroAssetApp">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api get put post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Esploro Single Asset Object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="deposit.status" type="esploroDepositStatusApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="deposit.type" type="esploroDepositTypeApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="owner" type="esploroUserInformationApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="assignee" type="esploroUserInformationApp" minOccurs="0" maxOccurs="1"/>
+
+			<xs:element name="notes">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="note" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="identifiers" type="esploroIdentifiersApp" minOccurs="0" maxOccurs="1"/>
+
+			<xs:element name="asset.affiliated.units" type="assetAffiliatedUnitsApp" minOccurs="1" maxOccurs="1"/>
+
+			<xs:element name="creators" minOccurs="1">
+	            <xs:complexType>
+	              <xs:sequence>
+	                <xs:element name="creator" type="esploroCreatorApp" minOccurs="1" maxOccurs="unbounded"/>
+	              </xs:sequence>
+	            </xs:complexType>
+			</xs:element>
+
+			<xs:element name="links" minOccurs="0">
+	            <xs:complexType>
+	              <xs:sequence>
+	                <xs:element name="link" type="esploroLinkApp" minOccurs="0" maxOccurs="unbounded"/>
+	              </xs:sequence>
+	            </xs:complexType>
+			</xs:element>
+			
+			<xs:element name="files" minOccurs="0">
+	            <xs:complexType>
+	              <xs:sequence>
+	                <xs:element name="file" type="esploroFileApp" minOccurs="0" maxOccurs="unbounded"/>
+	              </xs:sequence>
+	            </xs:complexType>
+			</xs:element>
+			
+			<xs:element name="titles" type="esploroTitlesApp" minOccurs="1" maxOccurs="1"/>
+
+			<xs:element name="publisher" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="publication.places">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="publication.place" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="dates" type="esploroDatesApp" minOccurs="0" maxOccurs="1"/>
+			
+			<xs:element name="resource.type.esploro" type="EsploroAssetTypeApp" minOccurs="0" maxOccurs="1"/>
+			
+			<xs:element name="subjects.esploro">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="subject" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="disciplines.summon">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="discipline.summon" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="keywords.esploro">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="keyword" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="contributors" minOccurs="0">
+				<xs:complexType>
+	              <xs:sequence>
+	                <xs:element name="contributor" type="esploroContributorApp" minOccurs="0" maxOccurs="unbounded"/>
+	              </xs:sequence>
+	            </xs:complexType>
+			</xs:element>
+			
+			<xs:element name="parentAsset" minOccurs="0">
+	            <xs:complexType>
+					<xs:sequence>
+	                	<xs:element name="relationship" type="esploroParentAssetApp" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+	            </xs:complexType>
+			</xs:element>
+			
+			<xs:element name="asset.to.asset.relationships" minOccurs="0">
+	            <xs:complexType>
+	                <xs:sequence>
+	                	<xs:element name="asset.to.asset.relationship" type="esploroAssetToAssetRelationshipApp" minOccurs="0" maxOccurs="unbounded"/>
+	                </xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="dataManagement" type="esploroDataAdminApp" minOccurs="0" maxOccurs="1"/>
+			
+	
+			<xs:element name="license" type="esploroLicenseApp" minOccurs="0" maxOccurs="1"/>
+
+			<xs:element name="esploro.access.rights" type="esploroAccessRightsApp" minOccurs="0" maxOccurs="1"/>
+
+			<xs:element name="descriptions" type="esploroDescriptionsApp" minOccurs="0" maxOccurs="1"/>
+
+			<xs:element name="languages">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="language" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="fundingReferenceList" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="funding.reference" type="esploroFundingreferenceApp" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="geo.locaton" type="esploroGeoLocationApp" minOccurs="0" maxOccurs="1"/>
+
+			<xs:element name="conference" type="esploroConferenceApp" minOccurs="0" maxOccurs="1"/>
+			
+			<xs:element name="deposit.policy" type="esploroDepositPolicyApp" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="esploroDepositStatusApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="approved"/>
+			<xs:enumeration value="declined"/>
+			<xs:enumeration value="deleted"/>
+			<xs:enumeration value="draft"/>
+			<xs:enumeration value="researcherdraft"/>
+			<xs:enumeration value="submitted"/>
+			<xs:enumeration value="returned"/>
+			<xs:enumeration value="imported"/>
+    	</xs:restriction>
+  	</xs:simpleType>
+
+	<xs:simpleType name="esploroDepositTypeApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="mediated"/>
+			<xs:enumeration value="direct"/>
+			<xs:enumeration value="capture"/>
+			<xs:enumeration value="import_profile"/>
+			<xs:enumeration value="api_import"/>
+    	</xs:restriction>
+  	</xs:simpleType>
+  	
+  	<xs:complexType name="esploroUserInformationApp">
+  		<xs:sequence>
+  			<xs:element name="first.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+  			<xs:element name="last.name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+  			<xs:element name="username" type="xs:string" minOccurs="1" maxOccurs="1"/>
+  			<xs:element name="user.id" type="xs:string" minOccurs="1" maxOccurs="1"/>
+  		</xs:sequence>
+  	</xs:complexType>
+
+	<xs:complexType name="assetAffiliatedUnitsApp">
+		<xs:sequence>
+			<xs:element name="organizational.units" type="organizationalUnitsApp" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	
+	<xs:complexType name="esploroDataAdminApp">
+		<xs:sequence>
+			<xs:element name="openaccess" type="AccessStatusApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="peerreview" type="AccessStatusApp" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroIdentifiersApp">
+		<xs:sequence>
+			<xs:element name="identifier.asset.id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.doi" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.pmid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.ismn" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.issn" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.eissn" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.isbn" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="identifier.eisbn" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="identifier.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.other" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroTitlesApp">
+		<xs:sequence>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="title.subtitle" type="xs:string" minOccurs="0"/>
+			<xs:element name="titles.alternative">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="title.alternative" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="titles.translated">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="title.translated" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="titles.other">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="title.other" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroDescriptionsApp">
+		<xs:sequence>
+			<xs:element name="description.abstract.topic" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="description.abstract" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description.methods" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description.coverage" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description.technical.info" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description.spatial" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description.temporal" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="description.other" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroConferenceApp">
+		<xs:sequence>
+			<xs:element name="conference.name" type="xs:string" minOccurs="0"/>
+			<xs:element name="conference.number" type="xs:string" minOccurs="0"/>
+			<xs:element name="conference.location" type="xs:string" minOccurs="0"/>
+			<xs:element name="conference.date" type="esploroDateRangeApp" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="organizationalUnitsApp">
+		<xs:sequence>
+			<xs:element name="top.level" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="organizational.unit" type="organizationalUnitApp" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+    </xs:complexType>
+
+	<xs:complexType name="organizationalUnitApp">
+		<xs:sequence>
+			<xs:element name="unit.code" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+    </xs:complexType>
+    
+	<xs:complexType name="esploroParentAssetApp">
+	    <xs:sequence>
+			<xs:element name="relation.title" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="related.identifier.type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="related.identifier" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="related.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="epage" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="spage" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="issue" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="volume" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="part" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="pages" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.eissn" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.issn" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.isbn" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="identifier.eisbn" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="identifier.doi" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    	</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroAssetToAssetRelationshipApp">
+    	<xs:sequence>
+			<xs:element name="relation.category" type="RelationCategoryApp" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="relation.type" type="AssetToAssetRelationTypeApp" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="related.asset.asset.id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="related.asset.title" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="related.asset.doi" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="related.asset.url" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    	</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroLinkApp">
+    	<xs:sequence>
+			<xs:element name="link.url" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="link.type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="link.description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    	</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroLicenseApp">
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="url" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="statement" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroFileApp">
+    	<xs:sequence>
+			<xs:element name="file.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="file.type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="file.size" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="file.description" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="file.license" type="esploroLicenseApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="file.access.rights" type="esploroAccessRightsApp" minOccurs="0" maxOccurs="1"/>
+    	</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroAccessRightsApp">
+		<xs:sequence>
+			<xs:element name="access.rights.policy" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="access.rights.reason" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="access.rights.fixed.date" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="access.rights.predefined" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroGeoLocationApp">
+		<xs:sequence>
+			<xs:element name="addresses" type="esploroGeoLocationAddresses" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="boxes" type="esploroGeoLocationBoxes" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="points" type="esploroGeoLocationPoints" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="polygons" type="esploroGeoLocationPolygons" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroGeoLocationAddresses">
+		<xs:sequence>
+			<xs:element name="address" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroGeoLocationBoxes">
+		<xs:sequence>
+			<xs:element name="box" type="esploroGeoLocationBox" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroGeoLocationBox">
+		<xs:sequence>
+			<xs:element name="display" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="west.bound.longitude" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="east.bound.longitude" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="south.bound.longitude" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="north.bound.longitude" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroGeoLocationPoints">
+		<xs:sequence>
+			<xs:element name="point" type="esploroGeoLocationPoint" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroGeoLocationPoint">
+		<xs:sequence>
+			<xs:element name="display" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="longitude" type="xs:string" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="latitude" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroGeoLocationPolygons">
+		<xs:sequence>
+			<xs:element name="polygon" type="esploroGeoLocationPolygon" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroGeoLocationPolygon">
+		<xs:sequence>
+			<xs:element name="display" type="xs:string" minOccurs="1" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroCreatorApp">
+    	<xs:sequence>
+    		<xs:element name="user.id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+    		<xs:element name="researcher.id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="creator.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="family.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="given.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.orcid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.isni" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.researcherid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.scopus" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.arxiv" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.era" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.orcid.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.isni.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.researcherid.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.scopus.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.arxiv.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.era.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="affiliation" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="1"/>
+ 	   </xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroContributorApp">
+    	<xs:sequence>
+    		<xs:element name="user.id" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="contributor.type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="contributor.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="family.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="given.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.orcid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.isni" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.researcherid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.scopus" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.arxiv" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.era" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.orcid.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.isni.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.researcherid.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.scopus.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.arxiv.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identifier.era.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="affiliation" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="email" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	    </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroDatesApp">
+		<xs:sequence>
+			<xs:element name="date.published" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.accepted" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.available" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.collected" type="esploroDateRangeApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.copyrighted" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.created" type="esploroDateRangeApp" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.issued" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.submitted" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.posted" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.epublished" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.updated" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="date.other" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="date.valid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroDateRangeApp">
+		<xs:sequence>
+			<xs:element name="fromDate" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="toDate" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="esploroFundingreferenceApp">
+    	<xs:sequence>
+			<xs:element name="funder.name" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="funder.identifier.isni" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="funder.identifier.grid" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="funder.identifier.crossref" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="funder.identifier.other" type="xs:string" minOccurs="0"/>
+			<xs:element name="award.number" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="award.uri" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="award.title" type="xs:string" minOccurs="0" maxOccurs="1"/>
+	    </xs:sequence>
+	</xs:complexType>
+	
+	<xs:complexType name="esploroDepositPolicyApp">
+		<xs:sequence>
+			<xs:element name="policy.accepted" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="date.accepted" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="policy.type" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="policy.note" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+
+	<xs:simpleType name="EsploroAssetTypeApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="publication.journalArticle"/>
+			<xs:enumeration value="publication.magazineArticle"/>
+			<xs:enumeration value="publication.newspaperArticle"/>
+			<xs:enumeration value="publication.newsletterArticle"/>
+			<xs:enumeration value="publication.journalIssue"/>
+			<xs:enumeration value="publication.book"/>
+			<xs:enumeration value="publication.bookChapter"/>
+			<xs:enumeration value="publication.bookReview"/>
+			<xs:enumeration value="publication.conferenceProceeding"/>
+			<xs:enumeration value="publication.dictionaryEntry"/>
+			<xs:enumeration value="publication.editedBook"/>
+			<xs:enumeration value="publication.encyclopediaEntry"/>
+			<xs:enumeration value="publication.report"/>
+			<xs:enumeration value="publication.translation"/>
+			<xs:enumeration value="publication.annotation"/>
+			<xs:enumeration value="publication.bibliography"/>
+			<xs:enumeration value="publication.letter"/>
+			<xs:enumeration value="publication.technicalDocumentation"/>
+			<xs:enumeration value="publication.editorial"/>
+			<xs:enumeration value="conference.conferenceAbstract"/>
+			<xs:enumeration value="conference.conferencePaper"/>
+			<xs:enumeration value="conference.conferencePoster"/>
+			<xs:enumeration value="conference.conferenceProgram"/>
+			<xs:enumeration value="dataset.dataset"/>
+			<xs:enumeration value="software.code"/>
+			<xs:enumeration value="software.workflow"/>
+			<xs:enumeration value="interactiveResource"/>
+			<xs:enumeration value="interactiveResource.website"/>
+			<xs:enumeration value="interactiveResource.blog"/>
+			<xs:enumeration value="interactiveResource.podcast"/>
+			<xs:enumeration value="interactiveResource.virtualRealityEnvironment"/>
+			<xs:enumeration value="creativeWork.musicalScore"/>
+			<xs:enumeration value="creativeWork.musicalComposition"/>
+			<xs:enumeration value="creativeWork.musicalPerformance"/>
+			<xs:enumeration value="creativeWork.fiction"/>
+			<xs:enumeration value="creativeWork.poetry"/>
+			<xs:enumeration value="creativeWork.essay"/>
+			<xs:enumeration value="creativeWork.drama"/>
+			<xs:enumeration value="creativeWork.nonFiction"/>
+			<xs:enumeration value="creativeWork.dance"/>
+			<xs:enumeration value="creativeWork.choreography"/>
+			<xs:enumeration value="creativeWork.theater"/>
+			<xs:enumeration value="creativeWork.film"/>
+			<xs:enumeration value="creativeWork.script"/>
+			<xs:enumeration value="creativeWork.newMedia"/>
+			<xs:enumeration value="creativeWork.designAndArchitecture"/>
+			<xs:enumeration value="creativeWork.painting"/>
+			<xs:enumeration value="creativeWork.sculpture"/>
+			<xs:enumeration value="creativeWork.exhibitionCatalog"/>
+			<xs:enumeration value="creativeWork.setDesign"/>
+			<xs:enumeration value="creativeWork.other"/>
+			<xs:enumeration value="other.other"/>
+    	</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="RelationTypeApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="ispartof"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="AssetToAssetRelationTypeApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="isdataof"/>
+			<xs:enumeration value="ispublicationof"/>
+			<xs:enumeration value="iscodeof"/>
+			<xs:enumeration value="isrelatedto"/>
+			<xs:enumeration value="hasformat"/>
+			<xs:enumeration value="hasversion"/>
+			<xs:enumeration value="isderivedfrom"/>
+			<xs:enumeration value="issourceof"/>
+			<xs:enumeration value="issupplementto"/>
+			<xs:enumeration value="issupplementedby"/>
+			<xs:enumeration value="iscontinuedby"/>
+			<xs:enumeration value="continues"/>
+			<xs:enumeration value="isnewversionof"/>
+			<xs:enumeration value="ispreviousversionof"/>
+			<xs:enumeration value="isvariantformof"/>
+			<xs:enumeration value="isoriginalformof"/>
+			<xs:enumeration value="requires"/>
+			<xs:enumeration value="isrequiredby"/>
+			<xs:enumeration value="conformsto"/>
+			<xs:enumeration value="iscorrectionof"/>
+			<xs:enumeration value="correction"/>
+			<xs:enumeration value="isretractionof"/>
+			<xs:enumeration value="original"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="RelationCategoryApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="internal"/>
+			<xs:enumeration value="external"/>
+    	</xs:restriction>
+	</xs:simpleType>  
+
+	<xs:simpleType name="AccessStatusApp">
+    	<xs:restriction base="xs:string">
+			<xs:enumeration value="unknown"/>
+			<xs:enumeration value="yes"/>
+			<xs:enumeration value="no"/>
+    	</xs:restriction>
+  	</xs:simpleType>
+
+</xs:schema>

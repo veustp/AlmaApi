@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>AlmaApi</groupId>
+  <artifactId>AlmaApi</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>AlmaApi</name>
+  <dependencies>
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>4.0.1</version> <!-- 3.17 -->
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.11.2</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
+<dependency>
+    <groupId>org.jboss.resteasy</groupId>
+    <artifactId>resteasy-client</artifactId>
+    <version>3.6.3.Final</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>4.0.1</version> <!-- 3.17 -->
+</dependency>
+  	<dependency>
+  		<groupId>com.google.guava</groupId>
+  		<artifactId>guava</artifactId>
+  		<version>27.1-jre</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.jvnet.ws.wadl</groupId>
+  		<artifactId>wadl</artifactId>
+  		<version>1.1.6</version>
+  		<type>pom</type>
+  	</dependency>
+<dependency>
+  <groupId>org.apache.cxf</groupId>
+  <artifactId>apache-cxf</artifactId>
+  <version>3.3.0</version>
+  <type>pom</type>
+</dependency>  	
+  	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-wadl2java-plugin</artifactId>
+		<version>3.3.0</version>
+	</dependency>  	
+<dependency>
+    <groupId>org.apache.cxf</groupId>
+    <artifactId>cxf-rt-rs-service-description-swagger</artifactId>
+    <version>3.3.0</version>
+</dependency>
+	<dependency>
+    	<groupId>com.sun.xml.bind</groupId>
+    	<artifactId>jaxb-xjc</artifactId>
+    	<version>2.3.2</version>
+	</dependency>
+	<dependency>
+    	<groupId>com.sun.xml.bind</groupId>
+    	<artifactId>jaxb-core</artifactId>
+    	<version>2.3.0.1</version>
+	</dependency>
+  	<dependency>
+  		<groupId>com.sun.xml.bind</groupId>
+  		<artifactId>jaxb-impl</artifactId>
+  		<version>2.3.2</version>
+  	</dependency>
+  </dependencies>        
+<build>
+  <!-- <sourceDirectory>src</sourceDirectory>-->
+  <plugins>
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <version>3.8.0</version>
+    <configuration>
+        <release>11</release>
+    </configuration>
+</plugin>
+	<plugin>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-wadl2java-plugin</artifactId>
+		<version>3.3.1</version>
+		<executions>
+		<execution>
+		<id>generate-sources</id>
+		<phase>generate-sources</phase>
+		<configuration>
+			<sourceRoot>${basedir}/target/generated-sources/cxf-rs</sourceRoot>
+			<wadlOptions>
+			<wadlOption>
+				<!--  activate one file at a time -->
+				<wadl>${basedir}/wadl/items.wadl</wadl>
+				<!-- <wadl>${basedir}/wadl/invoices.wadl</wadl>-->
+				<!-- <wadl>${basedir}/wadl/users.wadl</wadl>-->
+			<extraargs>
+				<extraarg>-impl</extraarg>
+				<extraarg>-interface</extraarg>
+				<extraarg>-verbose</extraarg>
+			</extraargs>
+			<packagename>libis.alma.api</packagename>
+			<schemaPackagenames>
+				<schemaPackagename>http://example.com/rest-test=rest.test.types</schemaPackagename>
+			</schemaPackagenames>
+			</wadlOption>
+			</wadlOptions>
+		</configuration>
+		<goals>
+			<goal>wadl2java</goal>
+		</goals>
+		</execution>
+		</executions>
+  	</plugin>  
+  </plugins>
+</build>  
+</project>

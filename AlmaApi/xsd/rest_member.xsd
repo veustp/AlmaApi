@@ -1,0 +1,50 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>
+				A member of a set is an entity of the set's content type.
+				The set members can be permanent (in case the set is itemized) or a result of a search query (in case the set is logical).
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="member" type="member"/>
+
+	<xs:complexType name="member">
+		<xs:annotation>
+			<xs:documentation>A member of the set.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The member id.
+						Mandatory in the POST action, and must be an id on an existing entity of the set's content type.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The member's general description.
+					This field is built according to each content type:
+					- For titles: title, author
+					- For holdings: library, location
+					- For items: barcode
+					- For users: full name
+					- For PO lines: related title
+					- For collections: name
+					- For authorities: title
+					- For portfolios: title
+					- For electronic collections: name
+					- For digital files: label
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional"/>
+	</xs:complexType>
+</xs:schema>

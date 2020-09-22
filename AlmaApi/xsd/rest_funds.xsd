@@ -1,0 +1,36 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of Funds. This list includes the relevant
+			allocated funds that are active in the current datye (based on the
+			related fiscal period).</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_fund.xsd" />
+
+	<xs:element name="funds" type="funds" />
+
+	<xs:complexType name="funds">
+		<xs:annotation>
+			<xs:documentation>A list of funds.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="fund"
+				type="fund">
+				<xs:annotation>
+					<xs:documentation>Fund object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of funds. This can be used when
+					retrieving a long list of funds using pagination.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

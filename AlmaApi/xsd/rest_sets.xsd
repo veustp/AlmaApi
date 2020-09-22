@@ -1,0 +1,24 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>List of the Sets.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="rest_set.xsd"/>
+	<xs:element name="sets" type="sets"/>
+	<xs:complexType name="sets">
+		<xs:annotation>
+			<xs:documentation>A list of sets.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="set" type="set">
+				<xs:annotation>
+					<xs:documentation>set object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of sets.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

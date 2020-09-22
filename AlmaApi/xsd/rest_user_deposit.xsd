@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>A deposit activity. When attached to a record, record will require approval.
+			A deposit activity can be created, retrieved and deleted. A deposit activity can be updated (notes only, e.g. when resubmitting a returned deposit), only if status is PENDING or RETURNED.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="rest_notes.xsd"/>
+	<xs:element name="user_deposit" type="user_deposit" />
+	<xs:complexType name="user_deposit">
+		<xs:annotation>
+			<xs:documentation>Deposit activity object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="user_primary_id" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The primary identifier of the requesting user. Output parameter. <!-- do we need this?? -->
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deposit_id" type="xs:string" nillable="false" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The identifier of the deposit in Alma. Should be used in subsequent queries regarding the deposit. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="title" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The title of the requested deposit.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="deposit_profile" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The deposit profile that determines how the deposit activity is processed. Mandatory. A list of available deposit profiles can be retrieved using the /almaws/v1/conf/deposit-profiles API.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="status" type="xs:string"  minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Status of the deposit. Possible values are: PENDING, RETURNED, DECLINED, WITHDRAWN, APPROVED.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="notes" type="notes" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Notes to or from the depositor.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mms_id" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>MMS_ID of the record associated with the deposit. Mandatory. Record will be suppressed.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rep_id" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>PID of the representation associated with the deposit. Mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="delivery_url" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Delivery URL of the representation associated with the deposit. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="submission_date" type="xs:date" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date the deposit activity was created. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="modification_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date the deposit activity was modified. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional"/>
+	</xs:complexType>
+</xs:schema>

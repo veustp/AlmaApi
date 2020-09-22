@@ -1,0 +1,28 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>List of purchase requests.</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="rest_purchase_request.xsd"/>
+	
+	<xs:element name="purchase_requests" type="purchase_requests"/>
+	<xs:complexType name="purchase_requests">
+		<xs:annotation>
+			<xs:documentation>A list of purchase_requests.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="purchase_request" type="purchase_request">
+				<xs:annotation>
+					<xs:documentation>purchase_request object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>
+					The total number of purchase_requests. 
+					This can be used when retrieving the list using pagination.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+</xs:schema>

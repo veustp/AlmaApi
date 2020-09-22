@@ -1,0 +1,204 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>This Web service retrieves information related to a
+			single fine/fee, and a list of transactions linked to that fine/fee .
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="fee" type="fee" />
+
+	<xs:complexType name="fee">
+		<xs:annotation>
+			<xs:documentation>Fee object</xs:documentation>
+		</xs:annotation>
+
+		<xs:sequence>
+			<!-- id -->
+			<xs:element name="id" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Identifier of the fee in Alma. Should be used in subsequent queries regarding the fee.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- type -->
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>HFrUserFinesFees.fineFeeType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The fine / fee type.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<!-- status -->
+			<xs:element name="status">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>HFrUserFinesFees.fineFeeStatus</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The fine / fee status.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<!-- balance -->
+			<xs:element name="balance" type="xs:float">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The fine / fee balance.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- original_amount -->
+			<xs:element name="original_amount" type="xs:float">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The fine / fee original amount.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- creation_time -->
+	        <xs:element name="creation_time" type="xs:dateTime">
+	           <xs:annotation>
+	    		<xs:documentation>Date the fine / fee was created.</xs:documentation>
+	           </xs:annotation>
+	        </xs:element>
+			<!-- status_time -->
+	        <xs:element name="status_time" type="xs:dateTime">
+	           <xs:annotation>
+	    		<xs:documentation>Date the fine / fee status was last changed.</xs:documentation>
+	           </xs:annotation>
+	        </xs:element>
+			<!-- comment -->
+			<xs:element name="comment" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Fine / fee comment.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- title -->
+			<xs:element name="title" type="xs:string" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The item title.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- barcode -->
+			<xs:element name="barcode" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>The item barcode.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<!-- transactions -->
+			<xs:element name="transactions" type="transactions" />
+
+		</xs:sequence>
+
+		<xs:attribute name="link" type="xs:string" use="optional" />
+	</xs:complexType>
+
+	<xs:complexType name="transactions">
+		<xs:annotation>
+			<xs:documentation>A list of transactions.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="transaction"
+				type="transaction">
+				<xs:annotation>
+					<xs:documentation>Transaction Object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="transaction">
+		<xs:annotation>
+			<xs:documentation>Transaction object</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<!-- type -->
+			<xs:element name="type">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>FineFeeTransactionType</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>The fine / fee transaction type.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<!-- amount -->
+			<xs:element name="amount" type="xs:float">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The transaction amount.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- reason -->
+			<xs:element name="reason" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The reason for the transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- comment -->
+			<xs:element name="comment" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>A note attached to the transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- created_by -->
+			<xs:element name="created_by" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The operator who last updated the transaction.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<!-- transaction_time -->
+	        <xs:element name="transaction_time" type="xs:dateTime">
+	           <xs:annotation>
+	    		<xs:documentation>Date and time of the transaction.</xs:documentation>
+	           </xs:annotation>
+	        </xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

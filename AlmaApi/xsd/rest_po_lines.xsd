@@ -1,0 +1,32 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of po_lines.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_po_line.xsd" />
+
+	<xs:element name="po_lines" type="po_lines" />
+
+	<xs:complexType name="po_lines">
+		<xs:annotation>
+			<xs:documentation>A list of po_lines.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="po_line" type="po_line">
+				<xs:annotation>
+					<xs:documentation>po_line object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of po_lines. This can be used when
+					retrieving the po_lines list using pagination.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

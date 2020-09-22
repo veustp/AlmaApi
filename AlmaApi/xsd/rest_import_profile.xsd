@@ -1,0 +1,302 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Import profiles define how input file records are imported into Alma and how they are mapped to corresponding records in the Alma system.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="import_profile" type="import_profile" />
+
+	<xs:complexType name="import_profile">
+		<xs:annotation>
+			<xs:documentation>Import profile object</xs:documentation>
+		</xs:annotation>
+
+		<xs:sequence>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Import profile id. Should be
+						used in subsequent queries regarding the course. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Import profile type. Currently, only Digital is supported.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Import profile name.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Import profile description.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="active" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indication if the import profile is active. Default is True.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="source_format" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The source format of the bibliographic, authority, or EOD file, such as MARC21 Bibliographic.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="target_format" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The format for the target file. For example, Marc21 Bibliographic.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="file_name_patterns" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>File name pattern (such as *.xml) to filter out certain records that do not conform to the pattern.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="files_to_import"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Import files policy. Possible values: All ,New.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="scheduler_status"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Active / Inactive indication whether the schedule is on.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="import_scheduler"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Schedule. For example, (every) SATURDAY (11 AM).
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="digital_details" type="digital_details" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Detailed digital related information of the profile. Relevant only if the profile type is Digital.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="additional_info" type="xs:string">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Additional information following an action on the item. Output parameter.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="digital_details">
+		<xs:annotation>
+			<xs:documentation>Detailed digital related information of the profile. Relevant only if the profile type is Digital.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="remote" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Indication whether the profile is for remote digital.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="remote_repository_instance"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The name of the remote digital repository instance used by this profile. Relevant when remote.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ie_type"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The type of IE Entity that will be created as a result of the import. For example, book.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ie_status"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The status of IE Entity that will be created as a result of the import. For example, SUPPRESSED.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="collection_assignment"  minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The collection to which the imported records will be assigned.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="active" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>
+						Active or inactive indication for the remote representation.
+						Active or inactive indication for local digital representation in defined
+						for each local digital representation in the local digital representation list.
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="library"  minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The library that owns the imported digital resources.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="representations" type="representations" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>List of related digital representations. Relevant when
+						not remote.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="representations">
+		<xs:annotation>
+			<xs:documentation>List of related digital representations. Relevant when
+						not remote.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="representation" type="representation" minOccurs="0" maxOccurs="unbounded">
+			<xs:annotation>
+					<xs:documentation>Specific related digital representation.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="representation">
+		<xs:sequence>
+			<xs:annotation>
+				<xs:documentation>Specific related digital representation.</xs:documentation>
+			</xs:annotation>
+			<xs:element name="active" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Active or inactive indication of the representation.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="library"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>Library of the material.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="group_files_by" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>File types used to group for import. For example,
+						(.xml).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="label" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:documentation>The display label for the representation.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>
+

@@ -1,0 +1,181 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>A resource reminder.</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="reminder" type="reminder" />
+
+	<xs:complexType name="reminder">
+		<xs:annotation>
+			<xs:documentation>Resource reminder.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Identifier of the reminder in Alma. Output parameter.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="entity" type="entity" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Entity related information.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="type"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>ReminderTypes</xs:codeTable>
+						<xs:tags>api get put post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The reminder type. Mandatory.
+					Possible codes are listed in ReminderTypes [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="status"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>ReminderStatuses</xs:codeTable>
+						<xs:tags>api get put post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The reminder status. Mandatory.
+					Possible codes are listed in ReminderStatuses [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="text" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get put post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Informational text.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="reminder_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get put post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date on which the reminder is applied. Mandatory.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="created_by" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The creator of the reminder.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="created_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date on which the reminder was created.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="last_modified_by" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The last modifier of the reminder.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="last_modified_date" type="xs:date" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The date on which the reminder was modified.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional"/>
+	</xs:complexType>
+
+	<xs:complexType name="entity">
+		<xs:annotation>
+			<xs:documentation>Entity related information.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="entity_type"  minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:codeTable>SetContentType</xs:codeTable>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The entity type.  Cannot be modified for a PUT.
+					Possible codes are listed in SetContentType [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="entity_id" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The entity ID.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The description.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			</xs:all>
+		<xs:attribute name="link" type="xs:string" use="optional"/>
+	</xs:complexType>
+</xs:schema>

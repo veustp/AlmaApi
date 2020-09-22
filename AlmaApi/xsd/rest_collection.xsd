@@ -1,0 +1,150 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Collection describes detail of collections in the form of metadata.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="collection" type="collection" />
+
+	<xs:complexType name="collection">
+		<xs:annotation>
+			<xs:documentation>Collection object</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="pid" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Collection Id.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="parent_pid" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Parent pid of this collection. PUT - moves the collection. Note that it is not possible to move a collection into a collection of a different library.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="mms_id" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Link to the collection Bib record.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="link" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Name of the collection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Title of the collection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="thumbnail" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Link to the collection image.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="library" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Library of the collection. POST - uses the parent collection. PUT - relevant only for top level collection as for a sub-level collection it cannot be changed.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="collections" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:annotation>
+							<xs:appinfo>
+								<xs:tags>api get</xs:tags>
+							</xs:appinfo>
+							<xs:documentation>Collections within this collection.
+							</xs:documentation>
+						</xs:annotation>
+						<xs:element name="collection" type="collection"
+							minOccurs="0" maxOccurs="unbounded">
+							<xs:annotation>
+								<xs:documentation>Collection.</xs:documentation>
+							</xs:annotation>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="external_system" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+				<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>External System.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="external_id" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>External Id.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="order" type="xs:int" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get post put</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Order of the collection.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

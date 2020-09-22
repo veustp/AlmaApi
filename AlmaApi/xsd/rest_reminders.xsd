@@ -1,0 +1,32 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>List of resource management cataloging reminders.</xs:documentation>
+	</xs:annotation>
+
+	<xs:include schemaLocation="rest_reminder.xsd" />
+
+	<xs:element name="reminders" type="reminders" />
+
+	<xs:complexType name="reminders">
+		<xs:annotation>
+			<xs:documentation>A list of resource reminders.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="reminder"
+				type="reminder">
+				<xs:annotation>
+					<xs:documentation>Reminder object.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="total_record_count" type="xs:int">
+			<xs:annotation>
+				<xs:documentation>The total number of reminders.
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+
+</xs:schema>

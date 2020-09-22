@@ -1,0 +1,189 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>
+The allowed request options for a given user id.
+This information should be used by 3rd party discovery in order to display the valid options.
+		</xs:documentation>
+	</xs:annotation>
+	<xs:element name="request_options" type="request_options"/>
+	<xs:complexType name="request_options">
+		<xs:annotation>
+			<xs:documentation>A request options object.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element minOccurs="0" maxOccurs="unbounded" name="request_option" type="request_option">
+				<xs:annotation>
+					<xs:documentation>An allowed request option.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="request_option">
+		<xs:annotation>
+			<xs:documentation>An allowed request option.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="type" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+						<xs:codeTable>RequestOptions</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>
+						The type of request.
+						Possible codes are listed in 'RequestOptions' [code table|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="request_url" type="xs:string" minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>URL for request.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="general_electronic_service_details" type="general_electronic_service_details" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						General electronic service related information.
+						Relevant when type is GES.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="rs_broker_details" type="rs_broker_details" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						Resource sharing broker related information.
+						Relevant when type is RS_BROKER.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+
+	<xs:complexType name="general_electronic_service_details">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>
+				General electronic service related information.
+				Relevant when type is GES.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The internal code for the service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The internal name used for the service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="description" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The description of the service.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="public_name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The label for displaying in discovery.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="public_note" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The note or description of the service for dislaying in discovery.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="avail_for_physical" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether the service should be displayed for physical resources.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="avail_for_electronic" type="xs:boolean" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Indication whether the service should be displayed for electronic resources.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+
+	<xs:complexType name="rs_broker_details">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>get</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>
+				Resource sharing broker related information.
+				Relevant when type is RS_BROKER.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="code" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The internal code for the partner.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="name" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The name used for the partner.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="loan_period" type="xs:string" minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The amount of time the user has before having to return the item to the resource sharing library.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:schema>

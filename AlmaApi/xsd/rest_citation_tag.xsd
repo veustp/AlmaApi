@@ -1,0 +1,59 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+	<xs:annotation>
+		<xs:documentation>Information about a single Tag of a Citation in Alma.
+		</xs:documentation>
+	</xs:annotation>
+
+	<xs:element name="citation_tag" type="citation_tag" />
+
+	<xs:complexType name="citation_tag">
+		<xs:annotation>
+			<xs:documentation>Citation Tag Object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+
+			<xs:element name="type" minOccurs="0" >
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+						<xs:codeTable>TagTypes</xs:codeTable>
+					</xs:appinfo>
+					<xs:documentation>
+						The type of the tag.
+						Possible codes are listed in 'TagTypes' [code tables|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+			<xs:element name="value" minOccurs="0">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api get</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>
+						The value of the tag.
+						Possible codes are listed in 'PublicTags' or 'LibraryTags' [code tables|https://developers.exlibrisgroup.com/blog/Working-with-the-code-tables-API].
+					</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="desc" type="xs:string" use="optional" />
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+
+
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

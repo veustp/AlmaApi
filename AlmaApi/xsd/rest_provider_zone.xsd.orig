@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:annotation>
+		<xs:documentation>The Provider Zone API enables vendors, publishers and providers to manage their resources in the Alma Community Zone. It can be used to create, update and access collections, portfolios and Bibliographic records managed by the vendors.</xs:documentation>
+	</xs:annotation>
+	<xs:element name="pzparameters" type="pzparameters" />
+	<xs:complexType name="pzparameters">
+		<xs:annotation>
+			<xs:documentation>Provider Zone object.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="collection_name" type="xs:string"
+				minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The collection name - mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="kbart_title_list" type="kbart_title_list"
+				minOccurs="1" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>KBART title list information - mandatory.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="marc_file_link" type="xs:string"
+				minOccurs="0" maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The link to the MARC BIB file.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="email" type="xs:string" minOccurs="0"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>Providers email address.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="kbart_title_list">
+		<xs:annotation>
+			<xs:appinfo>
+				<xs:tags>api post</xs:tags>
+			</xs:appinfo>
+			<xs:documentation>Information of the kbart title list.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="link" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The link to the kbart title list.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="mode" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+					</xs:appinfo>
+					<xs:documentation>The mode of the kbart title list.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="action" type="xs:string" minOccurs="1"
+				maxOccurs="1">
+				<xs:annotation>
+					<xs:appinfo>
+						<xs:tags>api post</xs:tags>
+						<xs:example></xs:example>
+					</xs:appinfo>
+					<xs:documentation>The action.</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>
