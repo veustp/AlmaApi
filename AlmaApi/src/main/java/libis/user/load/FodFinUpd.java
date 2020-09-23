@@ -109,7 +109,7 @@ public class FodFinUpd {
 					Email.EmailTypes ets = new Email.EmailTypes();
 					ets.getEmailType().add(et);
 					ue.setEmailTypes(ets);
-					ue.setSegmentType("EXternal");
+					ue.setSegmentType("External");
 					ues.getEmail().add(ue);
 					uci.setEmails(ues);
 					u.setContactInfo(uci);
