@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,13 +23,13 @@ import libis.alma.api.rest.AlmaDate;
 import libis.alma.api.rest.AlmaUserAPI;
 import libis.user.pkg.*;
 
-public class FodFinUpd {
+public class ecbUserExcel {
 	private static final Logger LOGGER = LogManager.getLogger(UserExcel.class);
 	String institution;
 	List<User> userList;
 	//userList.add("sup1");
 	
-	public FodFinUpd (File f, String inst) {
+	public ecbUserExcel (File f, String inst) {
 		this.userList = new ArrayList<User>();
 		this.institution = inst;
 		try {
@@ -99,7 +100,54 @@ public class FodFinUpd {
 			case 1: //primary identifier
 					u.setPrimaryId(cellValue);
 					break;
-			case 2: //Email
+			case 2: //last name
+					u.setLastName(cellValue);
+					break;
+			case 3: //first name
+					u.setFirstName(cellValue);
+					break;
+			case 4: //action type
+					break;
+			case 5: //start date
+					break;
+			case 6: //expiry date
+					if (DateUtil.isCellDateFormatted(cell)) {
+					   try {
+						   	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+					      	cellValue = sdf.format(cell.getDateCellValue());
+//					      	System.out.println(cellValue);
+//							System.out.println(cellValue.substring(0,4));
+//							System.out.println(cellValue.substring(4,6));
+//							System.out.println(cellValue.substring(6,8));
+							int year = Integer.parseInt(cellValue.substring(0,4));
+							int month = Integer.parseInt(cellValue.substring(4,6));
+							int day = Integer.parseInt(cellValue.substring(6,8));
+							
+							u.setExpiryDate(AlmaDate.setDate(year, month, day));
+							LOGGER.info("Expiry date set : "+cellValue);
+					    } catch (Exception e) {
+					    		LOGGER.error("Error at expirydate : "+e.getMessage());
+					            e.printStackTrace();
+					    }
+					} else {
+						LOGGER.info("Set current date as expiry date");
+						u.setExpiryDate(AlmaDate.currentDate());
+					}
+					break;
+			case 7: //campus
+					try {
+						User.CampusCode uc = new User.CampusCode();
+						String campusCode = User.getCampusCodeByDesc(inst, cellValue);
+						uc.setDesc(cellValue);
+						uc.setValue(campusCode);
+						u.setCampusCode(uc);
+						LOGGER.info("CampusCode : "+cellValue+"->"+campusCode);
+					} catch (Exception e) {
+						LOGGER.error("Error setting Campuscode: "+e.getMessage());
+						e.printStackTrace();
+					}
+					break;
+			case 8: //email
 					ContactInfo uci = new ContactInfo();
 					Emails ues = new Emails();
 					Email ue = new Email();
@@ -109,11 +157,24 @@ public class FodFinUpd {
 					Email.EmailTypes ets = new Email.EmailTypes();
 					ets.getEmailType().add(et);
 					ue.setEmailTypes(ets);
-					ue.setSegmentType("External");
+					ue.setSegmentType("EXternal");
 					ues.getEmail().add(ue);
 					uci.setEmails(ues);
 					u.setContactInfo(uci);
 					LOGGER.info("ContactInfo "+cellValue);
+					break;
+			case 9: //user group
+					try {
+						User.UserGroup ug = new User.UserGroup();
+						String userGroupCode = User.getUserGroupByDesc(inst, cellValue);
+						ug.setDesc(cellValue);
+						ug.setValue(userGroupCode);
+						u.setUserGroup(ug);
+						LOGGER.info("UserGroup : "+cellValue+"->"+userGroupCode);
+					} catch (Exception e) {
+						LOGGER.error("Error setting Usergroup: "+e.getMessage());
+						e.printStackTrace();
+					}
 					break;
 			}
 		}
@@ -122,9 +183,10 @@ public class FodFinUpd {
 	
 	public static void main(String[] args) {
 		try (BufferedWriter writer = 
-				new BufferedWriter(new FileWriter(new File("C:\\Users\\PieterDV\\Downloads\\FodFinUpd\\reloadEmails.log")))) {
-			String inst = "FIN";
-			FodFinUpd uExcel = new FodFinUpd(new File("C:\\Users\\PieterDV\\Downloads\\FodFinUpd\\reloadEmails.xlsx"),inst);
+				new BufferedWriter(new FileWriter(new File("C:\\Users\\PieterDV\\Downloads\\usersECB\\usersECB.log")))) {
+			String inst = "ECB_SB";
+			ecbUserExcel uExcel = new ecbUserExcel(new File("C:\\Users\\PieterDV\\Downloads\\usersECB\\usersECB.xlsx"),inst);
+
 			int cnt =  0;
 			for (User usr : uExcel.userList) {
 				cnt++;
@@ -138,55 +200,35 @@ public class FodFinUpd {
 					try {
 						AlmaUserAPI userApi = new AlmaUserAPI(inst);
 						u = userApi.getUser(usr.getPrimaryId());
-						String emailaddress = usr.getContactInfo().getEmails().getEmail().get(0).getEmailAddress();
-						//check if email identifier already exists
-						boolean emailExists = false;
-						for (UserIdentifier uI : u.getUserIdentifiers().getUserIdentifier()) {
-							if (uI.getIdType().getValue().contentEquals("EMAIL")) {
-								emailExists = true;
-							}
-						}
-						String barcode;
-						boolean barcodeChanged = false;
-						for (UserIdentifier uI : u.getUserIdentifiers().getUserIdentifier()) {
-							if (uI.getIdType().getValue().contentEquals("01")) {
-								barcode = uI.getValue();
-								if (barcode.equals(usr.getPrimaryId())) {
-									LOGGER.info("Barcode "+barcode+" equals PrimaryId "+usr.getPrimaryId());
-									barcodeChanged = true;
-									uI.setValue("B"+barcode);
-								}
-							}
-						}
-						if (barcodeChanged) {
-							User.jaxbObjectToXML(u);
-						}
-						if (!emailExists) {
-							UserIdentifier uI = new UserIdentifier();
-							UserIdentifier.IdType uIT = new UserIdentifier.IdType();
-							uIT.setDesc("e-mail address");
-							uIT.setValue("EMAIL");
-							uI.setIdType(uIT);
-							uI.setValue(emailaddress);
-							uI.setStatus("ACTIVE");
-							u.getUserIdentifiers().getUserIdentifier().add(uI);
-							try {
-								LOGGER.info("Add Emailaddress "+emailaddress+" as identifier to user "+u.getPrimaryId());
-								userApi.putUser(u);									
-							} catch (Exception ePut) {
-								writer.write("Error main(): putUser() "+ePut.getMessage());
-								writer.newLine();
-								LOGGER.error("Error main(): putUser() "+ePut.getMessage());
-								System.out.println("Error main(): putUser() "+ePut.getMessage());
-							}
-						} else { //emailExists
-							LOGGER.warn("Emailaddres Identifier already existed for user "+u.getPrimaryId());
+						try {
+							u.updUser(usr);
+							/*System.out.println("After updUser(u)");
+							User.jaxbObjectToXML(u);*/
+							userApi.putUser(u);
+						} catch (Exception ePut) {
+							writer.write("Error main(): putUser() "+ePut.getMessage());
+							writer.newLine();
+							LOGGER.error("Error main(): putUser() "+ePut.getMessage());
+							System.out.println("Error main(): putUser() "+ePut.getMessage());
 						}
 					} catch (Exception eGet) {
 						writer.write("Error main(): getUser() "+eGet.getMessage());
 						writer.newLine();
 						LOGGER.error("Error main(): getUser() "+eGet.getMessage());
 						System.out.println("Error main(): getUser() "+eGet.getMessage());
+						//try to create new user
+						try {
+							AlmaUserAPI userApi = new AlmaUserAPI(inst);
+							String pId = "";
+							usr.setForcePasswordChange("true");
+							pId = userApi.postUser(usr);
+							LOGGER.info("Info main(): postUser(): New user record pushed to Alma : "+pId);
+						} catch (Exception ePost) {
+							writer.write("Error main(): postUser() "+ePost.getMessage());
+							writer.newLine();
+							LOGGER.error("Error main(): postUser() "+ePost.getMessage());
+							System.out.println("Error main(): postUser() "+ePost.getMessage());
+						}
 					}
 				}
 			}
@@ -196,6 +238,11 @@ public class FodFinUpd {
 		}
 	}
 
+	public List<User> getUserList() {
+		return userList;
+	}
+
+	public void setUserList(List<User> userList) {
+		this.userList = userList;
+	}
 }
-
-
