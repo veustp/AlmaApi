@@ -381,6 +381,14 @@ public class User {
 			    CAMPUS_CODES.put("027","T2SP");
 			    CAMPUS_CODES.put("028","MP");
 			    CAMPUS_CODES.put("029","CS");
+			    CAMPUS_CODES.put("030","CEB");
+			    CAMPUS_CODES.put("031","HOL");
+			    CAMPUS_CODES.put("032","OMI");
+			    CAMPUS_CODES.put("033","SGO");
+			    CAMPUS_CODES.put("034","SIB");
+			    CAMPUS_CODES.put("035","SPL");
+			    CAMPUS_CODES.put("036","SSR");
+			    CAMPUS_CODES.put("037","UDI");
 				break;
 			default:
 				throw new Exception("error at getCampusCodeByDesc : no campuscodes defined for "+institution);			
