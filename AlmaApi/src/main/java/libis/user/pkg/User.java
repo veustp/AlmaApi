@@ -389,6 +389,7 @@ public class User {
 			    CAMPUS_CODES.put("035","SPL");
 			    CAMPUS_CODES.put("036","SSR");
 			    CAMPUS_CODES.put("037","UDI");
+			    CAMPUS_CODES.put("038","N/A");
 				break;
 			default:
 				throw new Exception("error at getCampusCodeByDesc : no campuscodes defined for "+institution);			

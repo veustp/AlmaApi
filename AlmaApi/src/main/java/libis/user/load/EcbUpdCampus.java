@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.logging.log4j.LogManager;
@@ -140,9 +141,9 @@ public class EcbUpdCampus {
 	
 	public static void main(String[] args) {
 		try (BufferedWriter writer = 
-				new BufferedWriter(new FileWriter(new File("C:\\temp\\UpdCampusCode\\UpdCampusCode.log")))) {
-			String inst = "ECB_SB";
-			EcbUpdCampus uExcel = new EcbUpdCampus(new File("C:\\temp\\UpdCampusCode\\UpdCampusCode2.xlsx"),inst);
+				new BufferedWriter(new FileWriter(new File("C:\\temp\\UpdCampusCode\\ObsCampusCodes.log")))) {
+			String inst = "ECB";
+			EcbUpdCampus uExcel = new EcbUpdCampus(new File("C:\\temp\\UpdCampusCode\\ObsCampusCodes.xlsx"),inst);
 
 			int cnt =  0;
 			for (User usr : uExcel.userList) {
@@ -159,17 +160,22 @@ public class EcbUpdCampus {
 							u.setCampusCode(usr.getCampusCode());
 							User.jaxbObjectToXML(usr);
 							User.jaxbObjectToXML(u);
+							if (u.getAccountType().getValue().equals("INTERNAL") &&
+							    !u.getExternalId().equals("")) {
+							    	u.setExternalId("");
+							    	LOGGER.info("Emptied External Id for Internal User "+u.getPrimaryId());
+							    }
 							userApi.putUser(u);
 							writer.write("OK|"+usr.getPrimaryId()+"|"+usr.getCampusCode().getValue()+"|"+usr.getCampusCode().getDesc());
 							writer.newLine();
 						} catch (NullPointerException eNP) { 
-							LOGGER.error("Error main(): putUser() "+eNP.toString());//ePut.getMessage());
-							System.out.println("Error main(): putUser() "+eNP.toString());//ePut.getMessage());
+							LOGGER.error("Error main(): putUser() "+u.getPrimaryId()+";"+eNP.toString());//ePut.getMessage());
+							System.out.println("Error main(): putUser() "+u.getPrimaryId()+";"+eNP.toString());//ePut.getMessage());
 							writer.write("NOK|"+usr.getPrimaryId()+"|"+usr.getCampusCode().getValue()+"|"+usr.getCampusCode().getDesc());
 							writer.newLine();
 						} catch (Exception ePut) {
-							LOGGER.error("Error main(): putUser() "+ePut.toString());//ePut.getMessage());
-							System.out.println("Error main(): putUser() "+ePut.toString());//ePut.getMessage());
+							LOGGER.error("Error main(): putUser() "+u.getPrimaryId()+";"+ePut.toString());//ePut.getMessage());
+							System.out.println("Error main(): putUser() "+u.getPrimaryId()+";"+ePut.toString());//ePut.getMessage());
 							writer.write("NOK|"+usr.getPrimaryId()+"|"+usr.getCampusCode().getValue()+"|"+usr.getCampusCode().getDesc());
 							writer.newLine();
 						}

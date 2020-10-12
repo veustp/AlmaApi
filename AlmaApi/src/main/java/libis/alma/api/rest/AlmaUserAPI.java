@@ -77,7 +77,7 @@ public class AlmaUserAPI {
 					return(uUpd);
 				} else {
 					this.getAlmaAPIClient().handleError(resp);					
-					throw(new Exception("Error in putUser()"));
+					throw(new Exception("Error in putUser(): "+user_id));
 				}			    
 			} catch (Exception e) {
 				String eMsg = "putUser Exception Encountered";
