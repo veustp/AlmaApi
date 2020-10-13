@@ -369,14 +369,16 @@ public class User {
 			    CAMPUS_CODES.put("015","MF");
 			    CAMPUS_CODES.put("016","MIP");
 			    CAMPUS_CODES.put("017","M");
-			    CAMPUS_CODES.put("018","MS1");
-			    CAMPUS_CODES.put("019","MS2");
-			    CAMPUS_CODES.put("020","MS3");
-			    CAMPUS_CODES.put("021","MS4");
+			    /* obsolete 20201013
+			     * CAMPUS_CODES.put("018","MS1");
+			     * CAMPUS_CODES.put("019","MS2");
+			     * CAMPUS_CODES.put("020","MS3");
+			     * CAMPUS_CODES.put("021","MS4");
+			     * CAMPUS_CODES.put("025","DSSB");
+			     * */
 			    CAMPUS_CODES.put("022","R");
 			    CAMPUS_CODES.put("023","RM");
 			    CAMPUS_CODES.put("024","SE");
-			    CAMPUS_CODES.put("025","DSSB");
 			    CAMPUS_CODES.put("026","S");
 			    CAMPUS_CODES.put("027","T2SP");
 			    CAMPUS_CODES.put("028","MP");
